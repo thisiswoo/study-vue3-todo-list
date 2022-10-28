@@ -16,5 +16,5 @@ vue3와 친해지기
 ### Description
 
 ```
-component에 대해 알아보기.
+vue2와 vue3의 차이점 중 Fragment에 대해 알아보기.
 ```

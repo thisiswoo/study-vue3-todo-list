@@ -16,5 +16,5 @@ vue3와 친해지기
 ### Description
 
 ```
-vue3를 이용하여 간략한 todo-list 만들기
+component에 대해 알아보기.
 ```

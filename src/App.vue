@@ -1,5 +1,11 @@
 <template>
-  <div class="name">{{ greet }}</div>
+  <div class="name">{{ name }}</div>
+  <button 
+    class="btn btn-primary" 
+    v-on:click="updateName"
+  >
+    Click
+  </button>
 </template>
 
 <script>
@@ -7,16 +13,22 @@
 export default {
   name: 'App',
   setup() {
-    const name = 'thisis woo';
+    let name = 'thisis woo';
 
-    const greeting = (name) => {
-      return 'hello, ' + name;
+    // const greeting = (name) => {
+    //   return 'hello, ' + name;
+    // }
+
+    // const greet = greeting(name);
+
+    const updateName = () => {
+      name = 'this is woo ~~'
+      console.log(name);
     }
 
-    const greet = greeting(name);
-
     return {
-      greet
+      name,
+      updateName
     }
   }
 }
@@ -24,6 +36,6 @@ export default {
 
 <style>
   .name {
-    color: skyblue;
+    color: #ff8080;
   }
 </style>

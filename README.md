@@ -1,24 +1,20 @@
 # study-vue3-todo-list
 
-## Project setup
+## Project version
+
 ```
-npm install
+node : 16.17.1
+vue : 5.0.8
 ```
 
-### Compiles and hot-reloads for development
+### Learning Objectives
+
 ```
-npm run serve
+vue3와 친해지기
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Description
 
-### Lints and fixes files
 ```
-npm run lint
+vue3를 이용하여 간략한 todo-list 만들기
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -16,5 +16,5 @@ vue3와 친해지기
 ### Description
 
 ```
-이벤트 사용해보기
+ref vs reactive 차이점과 사용법
 ```

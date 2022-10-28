@@ -1,5 +1,7 @@
 <template>
-  <div class="name">{{ name }}</div>
+  <div class="name">
+    {{ name }}
+  </div>
   <button 
     class="btn btn-primary" 
     v-on:click="updateName"
@@ -9,11 +11,22 @@
 </template>
 
 <script>
+import { ref } from "vue"; // number, string
+// import { reactive } from "vue"; // object, arry
 
 export default {
-  name: 'App',
+  name: "App",
   setup() {
-    let name = 'thisis woo';
+    // * ref
+    // const name = ref('this is woo'); // number, string
+    const name = ref({ // object, arry
+      id: 1
+    });
+
+    // * reactive
+    // const name = reactive({ // object, arry
+    //   id: 1
+    // });
 
     // const greeting = (name) => {
     //   return 'hello, ' + name;
@@ -22,20 +35,23 @@ export default {
     // const greet = greeting(name);
 
     const updateName = () => {
-      name = 'this is woo ~~'
+      // name.value = "this is woo ~~"; // .value -> ref()
+      name.value.id = 2;  // .value.xx -> ref()
+
+      // name.id = 2;  // .id -> reactive()
       console.log(name);
-    }
+    };
 
     return {
       name,
-      updateName
-    }
-  }
-}
+      updateName,
+    };
+  },
+};
 </script>
 
 <style>
-  .name {
-    color: #ff8080;
-  }
+.name {
+  color: #ff8080;
+}
 </style>

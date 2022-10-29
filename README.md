@@ -16,5 +16,5 @@ vue3와 친해지기
 ### Description
 
 ```
-ref vs reactive 차이점과 사용법
+data-binding 방법과 v-bind: 바인딩을 ":" 로 v-on: 이벤트를 "@"로 축약하는 방법을 알아보기
 ```

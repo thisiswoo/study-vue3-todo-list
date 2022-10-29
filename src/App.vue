@@ -1,10 +1,20 @@
 <template>
-  <div class="name">
+  <!-- v-bind: 를 줄이는 방법은 : 만 사용하는 것 -->
+  <div :class="nameClass">
     {{ name }}
   </div>
+  <!-- 
+    *** 주의 input 안의 v-bind를 사용할 때 순서로 인해 
+      input box안에 text가 노출되지 않을 수 있음.
+  -->
+  <input 
+    :type="type"  
+    :value="name"
+  >
+  <!-- v-on: 이벤트를 줄이는 방법은 @로 사용 가능 -->
   <button 
     class="btn btn-primary" 
-    v-on:click="updateName"
+    @click="updateName"
   >
     Click
   </button>
@@ -18,33 +28,32 @@ export default {
   name: "App",
   setup() {
     // * ref
-    // const name = ref('this is woo'); // number, string
-    const name = ref({ // object, arry
-      id: 1
-    });
+    const name = ref('this is'); // number, string
+    const type = ref('number');
+    const nameClass = ref('');
+    // const name = ref({ // object, arry
+    //  id: 1
+    // });
 
     // * reactive
     // const name = reactive({ // object, arry
     //   id: 1
     // });
-
-    // const greeting = (name) => {
-    //   return 'hello, ' + name;
-    // }
-
-    // const greet = greeting(name);
-
+    
     const updateName = () => {
-      // name.value = "this is woo ~~"; // .value -> ref()
-      name.value.id = 2;  // .value.xx -> ref()
+      name.value = "woo ~~"; // .value -> ref()
+      type.value = 'text';
+      nameClass.value = 'name'
+      // name.value.id = 2;  // .value.xx -> ref()
 
       // name.id = 2;  // .id -> reactive()
-      console.log(name);
     };
 
     return {
       name,
       updateName,
+      type,
+      nameClass,
     };
   },
 };

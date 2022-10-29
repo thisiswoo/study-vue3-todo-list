@@ -1,20 +1,19 @@
 <template>
-  <!-- v-bind: 를 줄이는 방법은 : 만 사용하는 것 -->
-  <div :class="nameClass">
-    {{ name }}
-  </div>
+  <!-- <input 
+    type="text"
+    :value="name"
+    @input="updateName"
+  > -->
   <!-- 
-    *** 주의 input 안의 v-bind를 사용할 때 순서로 인해 
-      input box안에 text가 노출되지 않을 수 있음.
+    v-model을 사용하면 주석한 내용의 코드를 간편하게 줄일 수 있다.
   -->
   <input 
-    :type="type"  
-    :value="name"
+    type="text"
+    v-model="name"
   >
-  <!-- v-on: 이벤트를 줄이는 방법은 @로 사용 가능 -->
   <button 
     class="btn btn-primary" 
-    @click="updateName"
+    @click="onSubmit"
   >
     Click
   </button>
@@ -22,38 +21,26 @@
 
 <script>
 import { ref } from "vue"; // number, string
-// import { reactive } from "vue"; // object, arry
 
 export default {
   name: "App",
   setup() {
-    // * ref
     const name = ref('this is'); // number, string
-    const type = ref('number');
-    const nameClass = ref('');
-    // const name = ref({ // object, arry
-    //  id: 1
-    // });
-
-    // * reactive
-    // const name = reactive({ // object, arry
-    //   id: 1
-    // });
     
-    const updateName = () => {
-      name.value = "woo ~~"; // .value -> ref()
-      type.value = 'text';
-      nameClass.value = 'name'
-      // name.value.id = 2;  // .value.xx -> ref()
-
-      // name.id = 2;  // .id -> reactive()
+    const onSubmit = () => {
+      console.log(name.value);
     };
+
+    // const updateName = (e) => {
+    //   console.log(e.target.value);
+    //   console.log(e);
+    //   name.value = e.target.value;
+    // };
 
     return {
       name,
-      updateName,
-      type,
-      nameClass,
+      onSubmit,
+      // updateName,
     };
   },
 };

@@ -1,13 +1,6 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <!--
-      @submit.prevent="xxx" 를 사용하여 간략하게 표현 가능.
-      <form 
-        @submit="onSubmit"
-        class="d-flex"
-      > 
-    -->
     <form 
       @submit.prevent="onSubmit"
       class="d-flex"
@@ -30,6 +23,16 @@
       </div>
     </form>
     {{ todos }}
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todos[0].subject }}
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todos[1].subject }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,12 +43,18 @@ export default {
   name: "App",
   setup() {
     const todo = ref(''); 
-    const todos = ref([]);  // arry
-    
-    // @submit.prevent="xxx" 를 사용하면 코드를 간결하게 줄일 수 있다.
-    // const onSubmit = (e) => {
+    const todos = ref([
+      {
+        id: 1, 
+        subject: '휴대폰 사기'
+      },
+      {
+        id: 2,
+        subject: '삼겹살 사기'
+      }
+    ]); 
+
     const onSubmit = () => {
-      // e.preventDefault();
       todos.value.push({
         id: Date.now(),
         subject: todo.value,
@@ -62,7 +71,5 @@ export default {
 </script>
 
 <style>
-.name {
-  color: #ff8080;
-}
+  .name { color: #ff8080; }
 </style>

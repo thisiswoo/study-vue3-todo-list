@@ -11,9 +11,4 @@
 
 ### Description
 
-- bootstrap을 이용하여 간단한 layout과 e.preventDefault를 vue문법으로 사용해보기.
-- list에 새로운 todo를 추가해보기.
-
-#### Reference
-
-- [Modifiers](https://vuejs.org/guide/essentials/template-syntax.html/) - prevent에 관한 설명
+- bootstrap을 이용하여 간단한 to-do 카드 만들어 보기

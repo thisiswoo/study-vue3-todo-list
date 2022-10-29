@@ -22,8 +22,7 @@
 
 <script>
 import { ref } from "vue"; // number, string
-// import { reactive } from "vue"; // object, arry
-
+ 
 export default {
   name: "App",
   setup() {
@@ -31,22 +30,11 @@ export default {
     const name = ref('this is'); // number, string
     const type = ref('number');
     const nameClass = ref('');
-    // const name = ref({ // object, arry
-    //  id: 1
-    // });
-
-    // * reactive
-    // const name = reactive({ // object, arry
-    //   id: 1
-    // });
-    
+      
     const updateName = () => {
       name.value = "woo ~~"; // .value -> ref()
       type.value = 'text';
       nameClass.value = 'name'
-      // name.value.id = 2;  // .value.xx -> ref()
-
-      // name.id = 2;  // .id -> reactive()
     };
 
     return {

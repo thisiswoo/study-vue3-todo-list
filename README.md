@@ -16,5 +16,6 @@ vue3와 친해지기
 ### Description
 
 ```
+* 단당향 바인딩(one-way data-binding)
 data-binding 방법과 v-bind: 바인딩을 ":" 로 v-on: 이벤트를 "@"로 축약하는 방법을 알아보기
 ```

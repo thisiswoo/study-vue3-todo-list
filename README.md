@@ -3,7 +3,7 @@
 ## Project version
 
 - node : 16.17.1
-- vue : 5.0.8
+- vue : 3.2.41
 
 ### Learning Objectives
 
@@ -11,4 +11,4 @@
 
 ### Description
 
-- bootstrap을 이용하여 간단한 to-do 카드 만들어 보기
+- v-for을 활용하여 todos의 arry의 값을 input에 적용하기.

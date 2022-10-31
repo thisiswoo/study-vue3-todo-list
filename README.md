@@ -4,7 +4,7 @@
 
 ```
 node : 16.17.1
-vue : 5.0.8
+vue : 3.2.41
 ```
 
 ### Learning Objectives

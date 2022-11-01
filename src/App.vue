@@ -58,7 +58,6 @@ export default {
           id: Date.now(),
           subject: todo.value,
           completed: false,
-          // completed: true,    // 차이점 확인. checkbox에 자동으로 체크됨.
         });
         hasError.value = false;
         todo.value = '';        // input 필드 작성 후 add 버튼 누른 후 input 안에 empty 만들어 주기.

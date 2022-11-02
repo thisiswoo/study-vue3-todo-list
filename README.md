@@ -15,4 +15,5 @@
 
 ### Reference
 
+- Object를 이용하여 Style 바인딩과 class 바인딩을 사용해보기.
 - [Class & Style Bindings Vus.js 공식문서 참고](https://vuejs.org/guide/essentials/class-and-style.html)

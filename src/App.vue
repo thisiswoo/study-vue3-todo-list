@@ -31,7 +31,16 @@
             type="checkbox"
             v-model="t.completed"
           >
-          <label class="form-check-label" >
+          <!-- style binding -->
+          <!-- <label 
+            class="form-check-label" 
+            :style="t.completed ? todoStyle : {}" 
+          > -->
+          <!-- class binding -->
+          <label 
+            class="form-check-label" 
+            :class="{ todo: t.completed }"
+          >
             {{ t.subject }}
           </label>
         </div>
@@ -49,6 +58,10 @@ export default {
     const todo = ref("");
     const todos = ref([]);
     const hasError = ref(false);
+    const todoStyle = {
+      textDecoration: 'line-through',
+      color: 'gray'
+    };
 
     const onSubmit = () => {
       if (todo.value === '') {
@@ -60,7 +73,7 @@ export default {
           completed: false,
         });
         hasError.value = false;
-        todo.value = '';        // input 필드 작성 후 add 버튼 누른 후 input 안에 empty 만들어 주기.
+        todo.value = '';// input 필드 작성 후 add 버튼 누른 후 input 안에 empty 만들어 주기.
       }
     };
 
@@ -69,13 +82,16 @@ export default {
       todos,
       onSubmit,
       hasError,
+      todoStyle,
     };
   },
 };
 </script>
 
 <style>
-.name {
-  color: #ff8080;
+/* class binding */
+.todo {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>

@@ -23,4 +23,4 @@
 - `Symbol`
 
 ### Reference
-- [props](https://vuejs.org/guide/components/props.html) 공식 문서 참고.
+- [Vue.js props](https://vuejs.org/guide/components/props.html) 공식 문서 참고.

@@ -1,38 +1,24 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
+    <!-- 자식컴포넌트(TodoSimpleForm에서 emit으로 보낸 add-todo를 받아와 사용하기 -->
     <TodoSimpleForm @add-todo="addTodo" />
     <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
-    <div v-for="(t, index) in todos" :key="t.id" class="card mt-2">
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            v-model="t.completed"
-          />
-          <label class="form-check-label" :class="{ todo: t.completed }">
-            {{ t.subject }}
-          </label>
-        </div>
-        <div>
-          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- 부노컴포넌트(App)에서 props로 todos의 데이터를 자식컴포넌트(TodoList)로 보내기. -->
+    <TodoList :todos="todos" />
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
+import TodoList from "./components/TodoList.vue";
 
 export default {
   name: "App",
   components: {
     TodoSimpleForm,
+    TodoList,
   },
   setup() {
     const todos = ref([]);

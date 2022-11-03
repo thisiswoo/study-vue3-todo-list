@@ -11,4 +11,4 @@
 
 ### Description
 
-- form 태그를 components로 만들기.
+- 자식 컴포넌트에서 부모 컴포넌트로 `emit`을 통해 데이터 보내기.

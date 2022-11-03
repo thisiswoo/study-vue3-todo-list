@@ -1,34 +1,22 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <TodoSimpleForm />
-    <div v-if="!todos.length">
-      추가된 Todo가 없습니다.
-    </div>
-    <div 
-      v-for="(t, index) in todos" 
-      :key="t.id" 
-      class="card mt-2"
-    >
+    <TodoSimpleForm @add-todo="addTodo" />
+    <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
+    <div v-for="(t, index) in todos" :key="t.id" class="card mt-2">
       <div class="card-body p-2 d-flex align-items-center">
         <div class="form-check flex-grow-1">
-          <input 
-            class="form-check-input" 
+          <input
+            class="form-check-input"
             type="checkbox"
             v-model="t.completed"
-          >
-          <label 
-            class="form-check-label" 
-            :class="{ todo: t.completed }"
-          >
+          />
+          <label class="form-check-label" :class="{ todo: t.completed }">
             {{ t.subject }}
           </label>
         </div>
         <div>
-          <button 
-            class="btn btn-danger btn-sm"
-            @click="deleteTodo(index)"  
-          >
+          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
             Delete
           </button>
         </div>
@@ -39,34 +27,24 @@
 
 <script>
 import { ref } from "vue";
-import TodoSimpleForm from './components/TodoSimpleForm.vue';
+import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 
 export default {
   name: "App",
   components: {
-    TodoSimpleForm
+    TodoSimpleForm,
   },
   setup() {
-    const todo = ref("");
     const todos = ref([]);
-    const hasError = ref(false);
+
     const todoStyle = {
-      textDecoration: 'line-through',
-      color: 'gray'
+      textDecoration: "line-through",
+      color: "gray",
     };
 
-    const onSubmit = () => {
-      if (todo.value === '') {
-        hasError.value = true;
-      } else {
-        todos.value.push({
-          id: Date.now(),
-          subject: todo.value,
-          completed: false,
-        });
-        hasError.value = false;
-        todo.value = '';// input 필드 작성 후 add 버튼 누른 후 input 안에 empty 만들어 주기.
-      }
+    const addTodo = (todo) => {
+      console.log("자식->부모 data : ", todo);
+      todos.value.push(todo);
     };
 
     const deleteTodo = (index) => {
@@ -74,10 +52,8 @@ export default {
     };
 
     return {
-      todo,
       todos,
-      onSubmit,
-      hasError,
+      addTodo,
       todoStyle,
       deleteTodo,
     };

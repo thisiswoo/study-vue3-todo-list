@@ -19,30 +19,35 @@
         This field cannot be empty
       </div>
     </form>
+    <div v-if="!todos.length">
+      추가된 Todo가 없습니다.
+    </div>
     <div 
-      v-for="t in todos" 
+      v-for="(t, index) in todos" 
       :key="t.id" 
       class="card mt-2"
     >
-      <div class="card-body p-2">
-        <div class="form-check">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <input 
             class="form-check-input" 
             type="checkbox"
             v-model="t.completed"
           >
-          <!-- style binding -->
-          <!-- <label 
-            class="form-check-label" 
-            :style="t.completed ? todoStyle : {}" 
-          > -->
-          <!-- class binding -->
           <label 
             class="form-check-label" 
             :class="{ todo: t.completed }"
           >
             {{ t.subject }}
           </label>
+        </div>
+        <div>
+          <button 
+            class="btn btn-danger btn-sm"
+            @click="deleteTodo(index)"  
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -77,12 +82,17 @@ export default {
       }
     };
 
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
     return {
       todo,
       todos,
       onSubmit,
       hasError,
       todoStyle,
+      deleteTodo,
     };
   },
 };

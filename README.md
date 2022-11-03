@@ -11,4 +11,4 @@
 
 ### Description
 
-- form 태그의 정보를 components로 만들기.
+- form 태그를 components로 만들기.

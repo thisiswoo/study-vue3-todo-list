@@ -5,7 +5,11 @@
     <TodoSimpleForm @add-todo="addTodo" />
     <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
     <!-- 부노컴포넌트(App)에서 props로 todos의 데이터를 자식컴포넌트(TodoList)로 보내기. -->
-    <TodoList :todos="todos" @toggle-todo="toggleTodo" />
+    <TodoList 
+      :todos="todos" 
+      @toggle-todo="toggleTodo" 
+      @child-delete-todo="parentsDeleteTodo"
+    />
   </div>
 </template>
 
@@ -39,7 +43,7 @@ export default {
       console.log(todos.value[index].completed);
     };
 
-    const deleteTodo = (index) => {
+    const parentsDeleteTodo = (index) => {
       todos.value.splice(index, 1);
     };
 
@@ -47,7 +51,7 @@ export default {
       todos,
       addTodo,
       todoStyle,
-      deleteTodo,
+      parentsDeleteTodo,
       toggleTodo,
     };
   },

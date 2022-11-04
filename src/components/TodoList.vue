@@ -14,12 +14,18 @@
           :value="t.completed" 
           @change="toggleTodo(index)"
         />
-        <label class="form-check-label" :class="{ todo: t.completed }">
+        <label 
+          class="form-check-label" 
+          :class="{ todo: t.completed }"
+        >
           {{ t.subject }}
         </label>
       </div>
       <div>
-        <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
+        <button 
+          class="btn btn-danger btn-sm" 
+          @click="childDeleteTodo(index)"
+        >
           Delete
         </button>
       </div>
@@ -44,8 +50,13 @@ export default {
       context.emit("toggle-todo", index);
     };
 
+    const childDeleteTodo = (index) => {
+      context.emit("child-delete-todo", index);
+    };
+
     return {
       toggleTodo,
+      childDeleteTodo,
     }
   }
 };

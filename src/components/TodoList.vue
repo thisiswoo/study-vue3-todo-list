@@ -1,8 +1,19 @@
 <template>
-  <div v-for="(t, index) in todos" :key="t.id" class="card mt-2">
+  <div 
+    v-for="(t, index) in todos" 
+    :key="t.id" 
+    class="card mt-2"
+  >
     <div class="card-body p-2 d-flex align-items-center">
       <div class="form-check flex-grow-1">
-        <input class="form-check-input" type="checkbox" v-model="t.completed" />
+        <!-- v-model은 양방향 바인딩(two-way binding)이기 때문에 'v-value`로 바꿔줘야 한다. -->
+        <!-- <input class="form-check-input" type="checkbox" v-model="t.completed" /> -->
+        <input 
+          class="form-check-input" 
+          type="checkbox" 
+          :value="t.completed" 
+          @change="toggleTodo(index)"
+        />
         <label class="form-check-label" :class="{ todo: t.completed }">
           {{ t.subject }}
         </label>
@@ -28,6 +39,15 @@ export default {
       required: true,
     },
   },
+  setup(props, context) {
+    const toggleTodo = (index) => {
+      context.emit("toggle-todo", index);
+    };
+
+    return {
+      toggleTodo,
+    }
+  }
 };
 </script>
 

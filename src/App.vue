@@ -1,19 +1,26 @@
 <template>
   <div class="container">
     <h4>count :  {{ count }}</h4>
-    <!-- doubleCountComputed와 doubleCountMethod() 차이점 콘솔에서 확인. -->
-    <h4>double count computed :  {{ doubleCountComputed }}</h4>
-    <h4>double count computed :  {{ doubleCountComputed }}</h4>
-    <h4>double count method:  {{ doubleCountMethod() }}</h4>
-    <h4>double count method:  {{ doubleCountMethod() }}</h4>
-    <button @click="count++">Add One</button>
     <h2>To-Do List</h2>
-    <!-- 자식컴포넌트(TodoSimpleForm에서 emit으로 보낸 add-todo를 받아와 사용하기 -->
+    <input
+        class="form-control"
+        type="text"
+        v-model="searchText"
+        placeholder="Search"
+      />
+    <hr />
     <TodoSimpleForm @add-todo="addTodo" />
-    <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
-    <!-- 부노컴포넌트(App)에서 props로 todos의 데이터를 자식컴포넌트(TodoList)로 보내기. -->
-    <TodoList 
+
+    <div v-if="!filterTodos.length">
+      There is nothing to display.
+    </div>
+    <!-- <TodoList 
       :todos="todos" 
+      @toggle-todo="toggleTodo" 
+      @child-delete-todo="parentsDeleteTodo"
+    /> -->
+    <TodoList 
+      :todos="filterTodos" 
       @toggle-todo="toggleTodo" 
       @child-delete-todo="parentsDeleteTodo"
     />
@@ -54,19 +61,16 @@ export default {
       todos.value.splice(index, 1);
     };
 
-    // computed와 함수의 차이
-    const count = ref(1);
-    // computed
-    const doubleCountComputed = computed(() => {
-      console.log('doubleCountComputed');
-      return count.value * 2;
+    const searchText = ref('');
+    const filterTodos = computed(() => {
+      // searchText.value가 empty string이 아닌경우
+      if(searchText.value) {  
+        return todos.value.filter(todo => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+      return todos.value;
     });
-    // 함수
-    const doubleCountMethod = () => {
-      console.log('doubleCountMethod');
-        return count.value * 2;
-    }
-
 
     return {
       todos,
@@ -74,9 +78,8 @@ export default {
       todoStyle,
       parentsDeleteTodo,
       toggleTodo,
-      count,
-      doubleCountComputed,
-      doubleCountMethod,
+      searchText,
+      filterTodos,
     };
   },
 };

@@ -45,13 +45,14 @@ export default {
       required: true,
     },
   },
-  setup(props, context) {
+  emits: ['toggle-todo', 'child-delete-todo'],
+  setup(props, { emit }) {
     const toggleTodo = (index) => {
-      context.emit("toggle-todo", index);
+      emit("toggle-todo", index);
     };
 
     const childDeleteTodo = (index) => {
-      context.emit("child-delete-todo", index);
+      emit("child-delete-todo", index);
     };
 
     return {

@@ -21,8 +21,10 @@
 import { ref } from "vue";
 
 export default {
+  emits: ['add-todo'],
   // 자식 컴포넌트에서 부모컴포넌트로 데이터를 보낼때 필요한게 'context'안에 들어있다.
-  setup(props, context) {
+  // context -> { emit }으로 객체 분해를 통해 emit으로 사용하기.
+  setup(props, { emit }) {
     const todo = ref("");
     const hasError = ref(false);
 
@@ -30,7 +32,7 @@ export default {
       if (todo.value === "") {
         hasError.value = true;
       } else {
-        context.emit("add-todo", {
+        emit("add-todo", {
           id: Date.now(),
           subject: todo.value,
           completed: false,

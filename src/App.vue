@@ -1,5 +1,12 @@
 <template>
   <div class="container">
+    <h4>count :  {{ count }}</h4>
+    <!-- doubleCountComputed와 doubleCountMethod() 차이점 콘솔에서 확인. -->
+    <h4>double count computed :  {{ doubleCountComputed }}</h4>
+    <h4>double count computed :  {{ doubleCountComputed }}</h4>
+    <h4>double count method:  {{ doubleCountMethod() }}</h4>
+    <h4>double count method:  {{ doubleCountMethod() }}</h4>
+    <button @click="count++">Add One</button>
     <h2>To-Do List</h2>
     <!-- 자식컴포넌트(TodoSimpleForm에서 emit으로 보낸 add-todo를 받아와 사용하기 -->
     <TodoSimpleForm @add-todo="addTodo" />
@@ -14,7 +21,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 import TodoList from "./components/TodoList.vue";
 
@@ -47,12 +54,29 @@ export default {
       todos.value.splice(index, 1);
     };
 
+    // computed와 함수의 차이
+    const count = ref(1);
+    // computed
+    const doubleCountComputed = computed(() => {
+      console.log('doubleCountComputed');
+      return count.value * 2;
+    });
+    // 함수
+    const doubleCountMethod = () => {
+      console.log('doubleCountMethod');
+        return count.value * 2;
+    }
+
+
     return {
       todos,
       addTodo,
       todoStyle,
       parentsDeleteTodo,
       toggleTodo,
+      count,
+      doubleCountComputed,
+      doubleCountMethod,
     };
   },
 };

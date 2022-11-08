@@ -1,0 +1,12 @@
+{
+    "todos": [
+        {
+            "id" : 1,
+            "contents" : "hi"
+        },
+        {
+            "id" : 2,
+            "contents" : "hello"
+        }
+    ]
+}

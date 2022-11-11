@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h4>count :  {{ count }}</h4>
     <h2>To-Do List</h2>
     <input
         class="form-control"
@@ -10,15 +9,11 @@
       />
     <hr />
     <TodoSimpleForm @add-todo="addTodo" />
+    <div style="color: red">{{ error }}</div>
 
     <div v-if="!filterTodos.length">
       There is nothing to display.
     </div>
-    <!-- <TodoList 
-      :todos="todos" 
-      @toggle-todo="toggleTodo" 
-      @child-delete-todo="parentsDeleteTodo"
-    /> -->
     <TodoList 
       :todos="filterTodos" 
       @toggle-todo="toggleTodo" 
@@ -31,6 +26,7 @@
 import { ref, computed } from "vue";
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 import TodoList from "./components/TodoList.vue";
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -40,6 +36,7 @@ export default {
   },
   setup() {
     const todos = ref([]);
+    const error = ref('');
 
     const todoStyle = {
       textDecoration: "line-through",
@@ -47,8 +44,21 @@ export default {
     };
 
     const addTodo = (todo) => {
-      console.log("자식->부모 data : ", todo);
-      todos.value.push(todo);
+      // DB에 todo 저장. 비동기
+      error.value = '';
+      axios.post('http://localhost:3000/todos', {
+        // json-server에도 auto increment가 적용이됨. id를 적지 않아도 됨.
+        subject: todo.subject,
+        completed: todo.completed,
+      }).then(res => {
+        // 성공되면 실행
+        console.log('success : ', res);
+        todos.value.push(res.data);
+      }).catch(err =>{
+        // 실패하면 실행
+        console.log('err : ', err);
+        error.value = 'Someting went wrong.'
+      });
     };
 
     const toggleTodo = (index) => {
@@ -80,6 +90,7 @@ export default {
       toggleTodo,
       searchText,
       filterTodos,
+      error,
     };
   },
 };

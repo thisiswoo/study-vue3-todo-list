@@ -46,19 +46,22 @@ export default {
     const addTodo = (todo) => {
       // DB에 todo 저장. 비동기
       error.value = '';
+      console.log('async start');
+
       axios.post('http://localhost:3000/todos', {
         // json-server에도 auto increment가 적용이됨. id를 적지 않아도 됨.
         subject: todo.subject,
         completed: todo.completed,
       }).then(res => {
         // 성공되면 실행
-        console.log('success : ', res);
+        console.log('async success : ', res);
         todos.value.push(res.data);
       }).catch(err =>{
         // 실패하면 실행
-        console.log('err : ', err);
-        error.value = 'Someting went wrong.'
+        console.log('async err : ', err);
+        error.value = 'Someting went wrong.';
       });
+      console.log('async end');
     };
 
     const toggleTodo = (index) => {

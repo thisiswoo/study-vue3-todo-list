@@ -43,35 +43,33 @@ export default {
       color: "gray",
     };
 
-    const addTodo = (todo) => {
+    const addTodo = async (todo) => {
       // DB에 todo 저장. 비동기
       error.value = '';
       console.log('async start');
-
-      axios.post('http://localhost:3000/todos', {
-        // json-server에도 auto increment가 적용이됨. id를 적지 않아도 됨.
-        subject: todo.subject,
-        completed: todo.completed,
-      }).then(res => {
-        // 성공되면 실행
-        console.log('async success : ', res);
+      try {
+        const res = await axios.post('http://localhost:3000/todos', {
+          // json-server에도 auto increment가 적용이됨. id를 적지 않아도 됨.
+          subject: todo.subject,
+          completed: todo.completed,
+        });
         todos.value.push(res.data);
-      }).catch(err =>{
-        // 실패하면 실행
+        console.log('async success : ', res);
+      } catch (err) {
         console.log('async err : ', err);
         error.value = 'Someting went wrong.';
-      });
+      }
       console.log('async end');
+    };
+
+    const parentsDeleteTodo = (index) => {
+      todos.value.splice(index, 1);
     };
 
     const toggleTodo = (index) => {
       console.log(todos.value[index].completed);
       todos.value[index].completed = !todos.value[index].completed;
       console.log(todos.value[index].completed);
-    };
-
-    const parentsDeleteTodo = (index) => {
-      todos.value.splice(index, 1);
     };
 
     const searchText = ref('');

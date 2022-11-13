@@ -38,6 +38,19 @@ export default {
     const todos = ref([]);
     const error = ref('');
 
+    const getTodos = async () => {
+      try {
+        // db.json에 있는 todos의 데이터를 모두 가져오기.
+        const res = await axios.get('http://localhost:3000/todos');
+        todos.value = res.data;
+      } catch(err) {
+        console.log(err);
+        error.value = 'Someting went wrong.';
+      }
+    };
+    // db.json에 있는 todos의 데이터 가져오기 실행.
+    getTodos();
+
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
@@ -49,7 +62,6 @@ export default {
       console.log('async start');
       try {
         const res = await axios.post('http://localhost:3000/todos', {
-          // json-server에도 auto increment가 적용이됨. id를 적지 않아도 됨.
           subject: todo.subject,
           completed: todo.completed,
         });

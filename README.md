@@ -13,4 +13,4 @@
 
 ### Description
 
-- 비동기 사용시 콜백지옥과 가독성을 위해서 `async await`을 이용하기.
+- todo 데이터 DB에서 가져오기.

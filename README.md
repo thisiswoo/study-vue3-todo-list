@@ -13,10 +13,8 @@
 
 ### Description
 
-- DB에도 toggle(checkbox) 적용시키기.
-- `PATCH`와 `PUT`의 차이
-- `PUT`은 데이터 전체를 변경.
-- `PATCH`는 데이터 부분을 변경.
+- pagination을 활용하여 paging 처리해주기.
+- `xxx.headers['x-total-count']`로 헤더 정보의 count를 가져와서 paging 정보 처리. 
 
 ### Reference
-[npm json-server](https://www.npmjs.com/package/json-server)
+[pagination](https://www.npmjs.com/package/json-server)

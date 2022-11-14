@@ -19,6 +19,26 @@
       @toggle-todo="toggleTodo" 
       @child-delete-todo="parentsDeleteTodo"
     />
+    <hr />
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#">
+            Previous
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">
+            1
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">
+            Next
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -37,11 +57,16 @@ export default {
   setup() {
     const todos = ref([]);
     const error = ref('');
+    const totalPage = ref(0);
+    const limit = 5;
+    const page = ref(1);
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/todos');
+        const res = await axios.get(`http://localhost:3000/todos?_page=${page.value}&_limit=${limit}`);
+        console.log('db data 개수 : ', res.headers[`x-total-count`]);
+        totalPage.value = res.headers[`x-total-count`];
         todos.value = res.data;
       } catch(err) {
         console.log(err);

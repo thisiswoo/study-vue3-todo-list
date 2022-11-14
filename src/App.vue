@@ -38,9 +38,9 @@ export default {
     const todos = ref([]);
     const error = ref('');
 
+    // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async () => {
       try {
-        // db.json에 있는 todos의 데이터를 모두 가져오기.
         const res = await axios.get('http://localhost:3000/todos');
         todos.value = res.data;
       } catch(err) {
@@ -56,8 +56,8 @@ export default {
       color: "gray",
     };
 
+    // DB에 todo 저장. 비동기
     const addTodo = async (todo) => {
-      // DB에 todo 저장. 비동기
       error.value = '';
       console.log('async start');
       try {
@@ -66,22 +66,27 @@ export default {
           completed: todo.completed,
         });
         todos.value.push(res.data);
-        console.log('async success : ', res);
       } catch (err) {
         console.log('async err : ', err);
-        error.value = 'Someting went wrong.';
       }
       console.log('async end');
     };
 
-    const parentsDeleteTodo = (index) => {
-      todos.value.splice(index, 1);
+    // DB에 todo data 삭제하기.
+    const parentsDeleteTodo = async (index) => {
+      error.value = '';
+      const id = todos.value[index].id;
+      try {
+        await axios.delete('http://localhost:3000/todos/' + id);  // 삭제가 성공하면
+        todos.value.splice(index, 1);                             // todos 배열의 인덱스를 가지고 있는 값을 삭제.
+      } catch(err) {
+        error.value = 'Someting went wrong.';
+        console.log(err);
+      }
     };
 
     const toggleTodo = (index) => {
-      console.log(todos.value[index].completed);
       todos.value[index].completed = !todos.value[index].completed;
-      console.log(todos.value[index].completed);
     };
 
     const searchText = ref('');

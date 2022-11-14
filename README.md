@@ -13,4 +13,4 @@
 
 ### Description
 
-- todo 데이터 DB에서 가져오기.
+- DB에서 todo 데이터 삭제하기.

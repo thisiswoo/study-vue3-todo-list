@@ -22,17 +22,20 @@
     <hr />
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item">
+        <li v-if="currentPage !== 1" class="page-item">
           <a class="page-link" href="#">
             Previous
           </a>
         </li>
-        <li class="page-item">
-          <a class="page-link" href="#">
-            1
-          </a>
+        <li
+          v-for="page in numberOfPages"
+          :key="page"
+          class="page-item"
+          :class="currentPage === page ? 'active' : ''"
+        >
+          <a class="page-link" href="#">{{page}}</a>
         </li>
-        <li class="page-item">
+        <li v-if="numberOfPages !== currentPage" class="page-item">
           <a class="page-link" href="#">
             Next
           </a>
@@ -57,16 +60,23 @@ export default {
   setup() {
     const todos = ref([]);
     const error = ref('');
-    const totalPage = ref(0);
+    const numberOfTodos = ref(0);
     const limit = 5;
-    const page = ref(1);
+    const currentPage = ref(1);
+
+    // computed를 사용했기 때문에 함수 안에 있는 Reactive State가 바뀔 때마다
+    // return Math.ceil(numberOfTodos.value / limit); 부분이 다시 실행 되어
+    // computed property가 업데이트가 됨.
+    const numberOfPages = computed(() => {
+      return Math.ceil(numberOfTodos.value / limit);
+    });
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${page.value}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`);
         console.log('db data 개수 : ', res.headers[`x-total-count`]);
-        totalPage.value = res.headers[`x-total-count`];
+        numberOfTodos.value = res.headers[`x-total-count`]; // db의 총 todo 개수
         todos.value = res.data;
       } catch(err) {
         console.log(err);
@@ -75,11 +85,6 @@ export default {
     };
     // db.json에 있는 todos의 데이터 가져오기 실행.
     getTodos();
-
-    const todoStyle = {
-      textDecoration: "line-through",
-      color: "gray",
-    };
 
     // DB에 todo 저장. 비동기
     const addTodo = async (todo) => {
@@ -138,12 +143,13 @@ export default {
     return {
       todos,
       addTodo,
-      todoStyle,
       parentsDeleteTodo,
       toggleTodo,
       searchText,
       filterTodos,
       error,
+      numberOfPages,
+      currentPage,
     };
   },
 };

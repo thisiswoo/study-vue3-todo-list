@@ -57,7 +57,7 @@ export default {
   setup() {
     const todos = ref([]);
     const error = ref('');
-    const totalPage = ref(0);
+    const numberOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
 
@@ -66,7 +66,7 @@ export default {
       try {
         const res = await axios.get(`http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`);
         console.log('db data 개수 : ', res.headers[`x-total-count`]);
-        totalPage.value = res.headers[`x-total-count`];
+        numberOfTodos.value = res.headers[`x-total-count`];
         todos.value = res.data;
       } catch(err) {
         console.log(err);

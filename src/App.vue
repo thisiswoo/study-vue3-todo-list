@@ -57,16 +57,16 @@ export default {
   setup() {
     const todos = ref([]);
     const error = ref('');
-    const numberOfTodos = ref(0);
+    const totalPage = ref(0);
     const limit = 5;
-    const page = ref(1);
+    const currentPage = ref(1);
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${page.value}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`);
         console.log('db data 개수 : ', res.headers[`x-total-count`]);
-        numberOfTodos.value = res.headers[`x-total-count`];
+        totalPage.value = res.headers[`x-total-count`];
         todos.value = res.data;
       } catch(err) {
         console.log(err);

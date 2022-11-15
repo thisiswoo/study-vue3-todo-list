@@ -16,6 +16,7 @@
 - pagination을 활용하여 paging 처리해주기.
 - `xxx.headers['x-total-count']`로 헤더 정보의 count를 가져와서 paging 정보 처리.
 - computed를 사용했기 때문에 함수 안에 있는 Reactive State가 바뀔 때마다 `return Math.ceil(numberOfTodos.value / limit);` 부분이 다시 실행 되어 computed property가 업데이트가 됨. 
+- pagination을 눌렀을 때 해당 정보(list) 가져오기.
 
 ### Reference
 [pagination](https://www.npmjs.com/package/json-server)

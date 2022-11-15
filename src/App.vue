@@ -20,23 +20,28 @@
       @child-delete-todo="parentsDeleteTodo"
     />
     <hr />
+    <!-- 추후 pagination components로 빼기. -->
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li v-if="currentPage !== 1" class="page-item">
-          <a class="page-link" href="#">
+          <a 
+            class="page-link" 
+            style="cursor: pointer"
+            @click="getTodos(currentPage - 1)"
+          >
             Previous
           </a>
         </li>
         <li
+          class="page-item"
           v-for="page in numberOfPages"
           :key="page"
-          class="page-item"
           :class="currentPage === page ? 'active' : ''"
         >
-          <a class="page-link" href="#">{{page}}</a>
+          <a class="page-link" style="cursor: pointer" @click="getTodos(page)">{{page}}</a>
         </li>
         <li v-if="numberOfPages !== currentPage" class="page-item">
-          <a class="page-link" href="#">
+          <a class="page-link" style="cursor: pointer" @click="getTodos(currentPage + 1)">
             Next
           </a>
         </li>
@@ -47,9 +52,10 @@
 
 <script>
 import { ref, computed } from "vue";
+import axios from 'axios';
+
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 import TodoList from "./components/TodoList.vue";
-import axios from 'axios';
 
 export default {
   name: "App",
@@ -72,9 +78,10 @@ export default {
     });
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
-    const getTodos = async () => {
+    const getTodos = async (page = currentPage.value) => {
+      currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`);
         console.log('db data 개수 : ', res.headers[`x-total-count`]);
         numberOfTodos.value = res.headers[`x-total-count`]; // db의 총 todo 개수
         todos.value = res.data;
@@ -150,6 +157,7 @@ export default {
       error,
       numberOfPages,
       currentPage,
+      getTodos,
     };
   },
 };

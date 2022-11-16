@@ -30,3 +30,37 @@
         - computed() hook 처럼 동작한다.
         - 함수 내부에 있는 여러 반응값을 관찰해야 할 때마다 사용하고 그 중 하나가 업데이트 될 때 마다 반등.
 
+### Reference
+
+- [watch](https://vuejs.org/guide/essentials/watchers.html)
+
+### Exemple Code
+
+## Watching a Single Source 
+- A watcher data sourve can either be getter function that returns a value, or directly a `ref`:
+```
+// watching a getter
+const stat = reactive({ count: 0 });
+watch(() => state.count, (count, prevCount) => {
+    codes...
+});
+
+// directly watching a ref
+const count = ref(0);
+watch(count, (count, prevCount) => {
+    codes...
+});
+```
+
+## Watching Multiple Sources
+- A watcher can also wath multiple sourves at the same time using an array:
+```
+const firstName = ref('');
+const lastName = ref('');
+
+watch([firstName, lastName], (newValues, prevValues) => {
+    console.log(newValues, prevValues);
+});
+```
+
+

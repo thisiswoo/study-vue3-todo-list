@@ -51,9 +51,7 @@
 </template>
 
 <script>
-// watchEffect를 사용하기 위해 'vue'에서 import 받아 setup()에서 사용가능. 
-// import { watchEffect, reactive } from 'vue';
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watch } from "vue";
 import axios from 'axios';
 
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
@@ -69,54 +67,36 @@ export default {
     const todos = ref([]);
     const error = ref('');
     const numberOfTodos = ref(0);
-    // const limit = 5;
+    let limit = 5;
     const currentPage = ref(1);
 
-    let limit = 5;
-    watchEffect(() => {
-      // 초기 limit의 값을 감지하여 watchEffect()가 실행 되지만,
-      // 추후 limit = 3;을 해준다고 하여도 다시 watchEffect()가 실행되지 않음.
-      // 이유는 limit가 reactive state가 아니기 때문.
-      console.log(limit);
-    });
-    limit = 3;
-
-
-    // reactive, props, computed가 변경 되었을때 도 실행.
-    // watchEffect(() => {
-    //   // 초기 값 reactive state인 currentPage = ref(1)을 인식하여 동작한다. 
-    //   // 밑에 numberOfTodos.value의 값이 변경되어도 재 실행 된다.
-    //   // Pagination을 클릭하게 되면 해당 값이 변경되기 때문에 실행하게 된다.
-    //   console.log(currentPage.value);
-    //   // 초기 값 reactive state인 numberOfTodos = ref(0)을 인식하여 동작한다. 
-    //   // numberOfTodos = ref(0)개에서 db에 접속하여 todos[]의 데이터의 개수를 모두 가져온 값이 변경되어 함수가 실행하게 된다. 
-    //   console.log(numberOfTodos.value);
+    // ref를 사용하여 watch 사용하기.
+    // 초기값을 인지하여 실행하는게 아니라 인자로 보낸 
+    // 'currentPage'의 값이 변경되면 실행.
+    // watch(currentPage, (currentPage, prev) => {
+    //   // 현재 currentPage값과, 전의 prev 값을 비교.
+    //   console.log(currentPage, prev);
     // });
 
-    // computed를 사용했기 때문에 함수 안에 있는 Reactive State가 바뀔 때마다
-    // return Math.ceil(numberOfTodos.value / limit); 부분이 다시 실행 되어
-    // computed property가 업데이트가 됨.
+    // reactive를 사용하여 watch 사용하기.
+    // const a = reactive({ b: 1 });
+    // watch(() => a.b, (current, prev) => {
+    //   console.log(current, prev);
+    // });
+    // 배열로 watch 사용하기.
+    // const a = reactive({ b: 1, c: 3 });
+    // watch(() => [a.b, a.c], (current, prev) => {
+    //   console.log(current, prev);
+    // });
+    // a.b = 2;
+    watch([currentPage, numberOfTodos], (current, prev) => {
+      console.log(current, prev);
+    });
+
+
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
     });
-    // computed watchEffect로 확인하기.
-    // watchEffect(() => {
-    //   // 초기 값 reactive state인 numberOfTodos = ref(0)을 인식하여 동작한다. 
-    //   // db에서 todos[]를 불러오면서 계산되어 값이 변경되어 다시 'watchEffect()'가 동작하게 된다.
-    //   console.log(numberOfPages.value);
-    // });
-
-    // reactive로 확인 하기.
-    // const a = reactive({
-    //   b: 1
-    // });
-    // watchEffect(() => {
-    //   // 초기값 d: 1이 실행이 된다.
-    //   console.log(a.b);
-    // });
-    // // const a.b(1)를 4로 업데이트 해주어 watchEffect()가 재 실행되어 콘솔에 1과 4가 찍히게 된다.
-    // a.b = 4;
-
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async (page = currentPage.value) => {

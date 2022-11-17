@@ -11,11 +11,19 @@
     <TodoSimpleForm @add-todo="addTodo" />
     <div style="color: red">{{ error }}</div>
 
-    <div v-if="!filterTodos.length">
+    <!-- <div v-if="!filterTodos.length">
+      There is nothing to display.
+    </div> -->
+    <div v-if="!todos.length">
       There is nothing to display.
     </div>
-    <TodoList 
+    <!-- <TodoList 
       :todos="filterTodos" 
+      @toggle-todo="toggleTodo" 
+      @child-delete-todo="parentsDeleteTodo"
+    /> -->
+    <TodoList 
+      :todos="todos" 
       @toggle-todo="toggleTodo" 
       @child-delete-todo="parentsDeleteTodo"
     />
@@ -69,30 +77,7 @@ export default {
     const numberOfTodos = ref(0);
     let limit = 5;
     const currentPage = ref(1);
-
-    // ref를 사용하여 watch 사용하기.
-    // 초기값을 인지하여 실행하는게 아니라 인자로 보낸 
-    // 'currentPage'의 값이 변경되면 실행.
-    // watch(currentPage, (currentPage, prev) => {
-    //   // 현재 currentPage값과, 전의 prev 값을 비교.
-    //   console.log(currentPage, prev);
-    // });
-
-    // reactive를 사용하여 watch 사용하기.
-    // const a = reactive({ b: 1 });
-    // watch(() => a.b, (current, prev) => {
-    //   console.log(current, prev);
-    // });
-    // 배열로 watch 사용하기.
-    // const a = reactive({ b: 1, c: 3 });
-    // watch(() => [a.b, a.c], (current, prev) => {
-    //   console.log(current, prev);
-    // });
-    // a.b = 2;
-    watch([currentPage, numberOfTodos], (current, prev) => {
-      console.log(current, prev);
-    });
-
+    const searchText = ref('');
 
     const numberOfPages = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
@@ -102,7 +87,7 @@ export default {
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
         numberOfTodos.value = res.headers[`x-total-count`]; // db의 총 todo 개수
         todos.value = res.data;
       } catch(err) {
@@ -156,16 +141,27 @@ export default {
       }
     };
 
-    const searchText = ref('');
-    const filterTodos = computed(() => {
-      // searchText.value가 empty string이 아닌경우
-      if(searchText.value) {  
-        return todos.value.filter(todo => {
-          return todo.subject.includes(searchText.value);
-        });
-      }
-      return todos.value;
+    // watch를 활용하여 검색기능 구현하기.
+    // 구현 방법
+    // 1. reactive state인 searchText가 empty data이기 때문에 getTodos() 함수가 실행.
+    // 2. db에 점근하여 ''와 같은 text있는지 확인하지만 없으니 db데이터 모두 출력.
+    // 3. 검색 기능에 db에 있는 값을 입력시, watch()가 searchText를 감시하고 있으므로 변경된 사항이 생겨서 실행하게 됨.
+    // 4. getTodos(1)에 인자로 1을 넣어주어 page를 1로 주고 searchText에 검색한 값이 db에 있으면 해당 데이터 출력.
+    watch(searchText, () => {
+      getTodos(1);
     });
+
+    // 화면 페이지에 5개의 데이터만 가져와서 뿌려주기 때문에
+    // 2,3,... 페이지의 데이터를 검색해도 데이터가 나오지 않음.
+    // const filterTodos = computed(() => {
+    //   // searchText.value가 empty string이 아닌경우
+    //   if(searchText.value) {  
+    //     return todos.value.filter(todo => {
+    //       return todo.subject.includes(searchText.value);
+    //     });
+    //   }
+    //   return todos.value;
+    // });
 
     return {
       todos,
@@ -173,7 +169,7 @@ export default {
       parentsDeleteTodo,
       toggleTodo,
       searchText,
-      filterTodos,
+      // filterTodos,
       error,
       numberOfPages,
       currentPage,

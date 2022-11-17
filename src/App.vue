@@ -87,7 +87,7 @@ export default {
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
         numberOfTodos.value = res.headers[`x-total-count`]; // db의 총 todo 개수
         todos.value = res.data;
       } catch(err) {
@@ -103,11 +103,11 @@ export default {
       error.value = '';
       console.log('async start');
       try {
-        const res = await axios.post('http://localhost:3000/todos', {
+        await axios.post('http://localhost:3000/todos', {
           subject: todo.subject,
           completed: todo.completed,
         });
-        todos.value.push(res.data);
+        getTodos();
       } catch (err) {
         console.log('async err : ', err);
       }
@@ -120,7 +120,7 @@ export default {
       const id = todos.value[index].id;
       try {
         await axios.delete('http://localhost:3000/todos/' + id);  // 삭제가 성공하면
-        todos.value.splice(index, 1);                             // todos 배열의 인덱스를 가지고 있는 값을 삭제.
+        getTodos();
       } catch(err) {
         error.value = 'Someting went wrong.';
         console.log(err);

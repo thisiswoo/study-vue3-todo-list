@@ -6,22 +6,15 @@
         type="text"
         v-model="searchText"
         placeholder="Search"
+        @keyup.enter="searchTodo"
       />
     <hr />
     <TodoSimpleForm @add-todo="addTodo" />
     <div style="color: red">{{ error }}</div>
 
-    <!-- <div v-if="!filterTodos.length">
-      There is nothing to display.
-    </div> -->
     <div v-if="!todos.length">
       There is nothing to display.
     </div>
-    <!-- <TodoList 
-      :todos="filterTodos" 
-      @toggle-todo="toggleTodo" 
-      @child-delete-todo="parentsDeleteTodo"
-    /> -->
     <TodoList 
       :todos="todos" 
       @toggle-todo="toggleTodo" 
@@ -141,29 +134,25 @@ export default {
       }
     };
 
-    // watch를 활용하여 검색기능 구현하기.
-    // 구현 방법
-    // 1. reactive state인 searchText가 empty data이기 때문에 getTodos() 함수가 실행.
-    // 2. db에 점근하여 ''와 같은 text있는지 확인하지만 없으니 db데이터 모두 출력.
-    // 3. 검색 기능에 db에 있는 값을 입력시, watch()가 searchText를 감시하고 있으므로 변경된 사항이 생겨서 실행하게 됨.
-    // 4. getTodos(1)에 인자로 1을 넣어주어 page를 1로 주고 searchText에 검색한 값이 db에 있으면 해당 데이터 출력.
-    watch(searchText, () => {
+    let timeout = null;
+    // keyup.enter 이벤트로 키보드 enter를 쳤을때 실행되는 함수.
+    const searchTodo = () => {
+      // clearTimeout으로 초기화.
+      clearTimeout(timeout);
       getTodos(1);
+    };
+    // searchText가 변경 되면 watch 함수가 실행.
+    watch(searchText, () => {
+      // 시작하자 마자 clearTimeout으로 초기화.
+      clearTimeout(timeout);
+      // 2초 후 실행하게 하기.
+      timeout = setTimeout(() => {
+        getTodos(1);
+      }, 2000)  // 2초 후 실행
     });
 
-    // 화면 페이지에 5개의 데이터만 가져와서 뿌려주기 때문에
-    // 2,3,... 페이지의 데이터를 검색해도 데이터가 나오지 않음.
-    // const filterTodos = computed(() => {
-    //   // searchText.value가 empty string이 아닌경우
-    //   if(searchText.value) {  
-    //     return todos.value.filter(todo => {
-    //       return todo.subject.includes(searchText.value);
-    //     });
-    //   }
-    //   return todos.value;
-    // });
-
     return {
+      searchTodo,
       todos,
       addTodo,
       parentsDeleteTodo,

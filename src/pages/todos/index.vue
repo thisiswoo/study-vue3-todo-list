@@ -1,6 +1,6 @@
 <template>
     <div>
-        todos page
+        Todos Page
     </div>
 </template>
 

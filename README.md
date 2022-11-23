@@ -13,7 +13,7 @@
 
 ### Description
 
-- vue `router`를 사용하여 page간의 이동하기.
+- 지금까지 만든 To-do 앱을 페이지로 이동
 
 ### Router install
 

@@ -14,7 +14,6 @@
 ### Description
 
 - vue `router`를 사용하여 page간의 이동하기.
-- 
 
 ### Router install
 

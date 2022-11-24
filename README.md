@@ -13,8 +13,5 @@
 
 ### Description
 
-- Router로 Navbar 추가하기
-
-### Reference
-
-- [Bootstrap 4.5 - Navbar](https://getbootstrap.com/docs/4.5/components/navbar/)
+- Navbar에 router link 적용하기.
+- <a>태그 대신 <router-link>사용 후 href -> `to`로 교체.

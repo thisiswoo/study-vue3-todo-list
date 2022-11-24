@@ -13,21 +13,8 @@
 
 ### Description
 
-- 지금까지 만든 To-do 앱을 페이지로 이동
-
-### Router install
-
-```
-npm install vue-router@4
-```
-
-### vue.config.js settings
-
-- add `lintOnSave: false`
-```
-lintOnSave: false
-```
+- Router로 Navbar 추가하기
 
 ### Reference
-[install router](https://router.vuejs.org/installation.html#direct-download-cdn)
-[createWebHashHistory](https://router.vuejs.org/api/#createwebhashhistory)
+
+- [Bootstrap 4.5 - Navbar](https://getbootstrap.com/docs/4.5/components/navbar/)

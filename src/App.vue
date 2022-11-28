@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link 
       class="navbar-brand" 
-      to="/"
+      :to="{ name: 'Home' }"
     >
       Home
     </router-link>
@@ -10,7 +10,7 @@
         <li class="nav-item active">
           <router-link 
             class="nav-link" 
-            to="/todos"
+            :to="{ name: 'Todos' }"
           >
             Todos
           </router-link>

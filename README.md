@@ -13,8 +13,7 @@
 
 ### Description
 
-- 수정 페이지 route 추가.
-- useRoute()를 통한 id값 확인 하기.
+- `useRouter`를 사용하여 페이지 이동
 
 1. 작성한 `vue 코드를 compile하여 서버`에 올려 놓는다.
 2. 서버에는 `html`과 `compile된 javascript` 파일들이 저장이 됨.

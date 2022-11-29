@@ -13,7 +13,7 @@
 
 ### Description
 
-- Todo Page Component ver1 만들기.
+- Todo Page Component ver2 만들기.
 
 ### Reference
 

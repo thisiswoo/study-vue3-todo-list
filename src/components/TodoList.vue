@@ -6,14 +6,25 @@
   >
     <div 
       class="card-body p-2 d-flex align-items-center"
+      style="cursor: pointer"
       @click="moveToPage(t.id)"
     >
       <div class="form-check flex-grow-1">
+        <!-- 
+          * 주의 : @change.stop에 event를 주게 되면 작동하지 않음.
+          vue : @click event에 .stop을 작성하여 event bubbling을 막는다 
+          javascript : event.stopPropagation() 임.
+
+          toggleTodo(index)에 index 값만 부모 컴포넌트에 보내주어 반대되는 값을 주어
+          로직을 구성하게 되는데, 다른 곳에서도 사용할 수 있게 되면 혼란이 될 수 있기 때문에
+          정확하게 하기 위해 event.target 값도 같이 부모 컴포넌트에 보내주기. 
+        -->
         <input 
           class="form-check-input" 
           type="checkbox" 
           :checked="t.completed" 
-          @change="toggleTodo(index)"
+          @change="toggleTodo(index, $event)"
+          @click.stop
         />
         <label 
           class="form-check-label" 
@@ -23,9 +34,13 @@
         </label>
       </div>
       <div>
+        <!-- 
+          vue : @click event에 .stop을 작성하여 event bubbling을 막는다 
+          javascript : event.stopPropagation() 임.
+        -->
         <button 
           class="btn btn-danger btn-sm" 
-          @click="childDeleteTodo(index)"
+          @click.stop="childDeleteTodo(index)"
         >
           Delete
         </button>
@@ -49,8 +64,12 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
 
-    const toggleTodo = (index) => {
-      emit("toggle-todo", index);
+    // toggleTodo(index)에 index 값만 부모 컴포넌트에 보내주어 반대되는 값을 주어
+    // 로직을 구성하게 되는데, 다른 곳에서도 사용할 수 있게 되면 혼란이 될 수 있기 때문에
+    // 정확하게 하기 위해 event.target 값도 같이 부모 컴포넌트에 보내주기. 
+    const toggleTodo = (index, event) => {
+      // checked 가 되면 true, checked가 되지 않으면 false
+      emit("toggle-todo", index, event.target.checked);
     };
 
     const childDeleteTodo = (index) => {

@@ -44,31 +44,6 @@
       "subject": "12",
       "completed": false,
       "id": 12
-    },
-    {
-      "subject": "13",
-      "completed": false,
-      "id": 13
-    },
-    {
-      "subject": "14",
-      "completed": false,
-      "id": 14
-    },
-    {
-      "subject": "15",
-      "completed": false,
-      "id": 15
-    },
-    {
-      "subject": "new add",
-      "completed": false,
-      "id": 16
-    },
-    {
-      "subject": "add new",
-      "completed": false,
-      "id": 17
     }
   ]
 }

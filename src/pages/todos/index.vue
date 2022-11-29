@@ -121,14 +121,19 @@ export default {
       }
     };
 
-    const toggleTodo = async (index) => {
+    // 자식에서 받아온 event.target.checked 값 인자로 받아 명확하게 값 바꾸어주기.
+    const toggleTodo = async (index, checked) => {
+      // 자식에서 받아온 checked 값 확인
+      console.log(checked);
       error.value = '';
       const id = todos.value[index].id;
       try {
         await axios.patch('http://localhost:3000/todos/' + id, {
-          completed: !todos.value[index].completed
+          // completed: !todos.value[index].completed
+          completed: checked
         });
-        todos.value[index].completed = !todos.value[index].completed;
+        // todos.value[index].completed = !todos.value[index].completed;
+        todos.value[index].completed = checked;
       } catch (err) {
         console.log(err);
         error.value = 'Someting went wrong.';

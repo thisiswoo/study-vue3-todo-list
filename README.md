@@ -13,5 +13,8 @@
 
 ### Description
 
-- `event bubbling`에 대해 알아보기.
-- `event bubbling`이란 자식 요소에서의 event가 `bubbling`되어 더 상위의 화면 요소들로 전달되는 현상.
+- Todo Page Component ver1 만들기.
+
+### Reference
+
+- [Plural routes](https://www.npmjs.com/package/json-server#plural-routes)

@@ -13,7 +13,11 @@
 
 ### Description
 
-- Todo Page Component ver2 만들기.
+- Todo Page Component ver3 만들기.
+- Todo Page(detail)에서 update 하기.
+- `PATCH` vs `PUT`
+- `PATCH`는 부분적으로 Update 할 때.
+- `PUT`은 전체적으로 Update 할 때.
 
 ### Reference
 

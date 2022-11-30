@@ -38,6 +38,7 @@
         <button 
             type="submit"
             class="btn btn-primary"
+            :disabled="!todoUpdated"
         >
             Save
         </button>
@@ -53,21 +54,33 @@
 <script>
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import { ref } from '@vue/reactivity';
+import { ref, computed } from 'vue';
+import _ from 'lodash';
 
 export default {
     setup() {
         const route = useRoute();
         const router = useRouter();
         const todo = ref(null);
+        const originalTodo = ref(null);
         const loading = ref(true);
         const todoId = route.params.id;
 
         const getTodo = async () => {
             const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
-            todo.value = res.data;
+            // 'res.data'의 같은 객체를 담게 되면 같은 메모리 주소를 바라보기 때문에
+            // todo를 업데이트 하게 되면 originalTodo까지 업데이트가 되는 현상이 발생.
+            // 이를 방지하기 위해 { ...res.data } <---- 스프레드 오퍼레이트.
+            todo.value = { ...res.data };
+            originalTodo.value = { ...res.data };
             loading.value = false;
         };
+
+        // 위 todo 값이 변경되었으면 Save 버튼을 disabled 처리
+        // 변경 되지 않았다면 disabled처리 하지 않음.
+        const todoUpdated = computed(() => {
+            return !_.isEqual(todo.value, originalTodo.value);
+        });
 
         // 상태변경
         const toggleTodoStatus = () => {
@@ -89,6 +102,7 @@ export default {
                 completed: todo.value.completed
             });
             console.log(res);
+            originalTodo.value = { ...res.data };
         };
 
         return {
@@ -97,6 +111,7 @@ export default {
             toggleTodoStatus,
             moveToTodoListPage, 
             onSave,
+            todoUpdated,
         };
     }
 };

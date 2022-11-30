@@ -13,12 +13,10 @@
 
 ### Description
 
-- Todo Page Component ver3 만들기.
-- Todo Page(detail)에서 update 하기.
-- `PATCH` vs `PUT`
-- `PATCH`는 부분적으로 Update 할 때.
-- `PUT`은 전체적으로 Update 할 때.
+- Todo Page Component ver4 만들기.
 
-### Reference
 
-- [Plural routes](https://www.npmjs.com/package/json-server#plural-routes)
+## Reference
+
+- [lodash](https://www.npmjs.com/package/lodash)
+- `npm i lodash`

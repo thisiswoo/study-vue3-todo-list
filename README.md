@@ -13,10 +13,9 @@
 
 ### Description
 
-- todo 페이지(detail)에서 저장이 잘 되었으면 우측 상단에 notification 해주기.
-- bootstrap 4.5의 alert 사용하기.
+- vue.js 3 Lifecycle 사용하기.
 
 
 ## Reference
 
-- [bootstrap 4.5](https://getbootstrap.com/docs/4.5/components/alerts/)
+- [Vue.js 3 Lifecycle](https://vuejs.org/api/composition-api-lifecycle.html)

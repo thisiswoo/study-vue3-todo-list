@@ -13,11 +13,10 @@
 
 ### Description
 
-- Todo Page Component ver4 만들기.
-- axios로 받은 data를 ref 변수에 담기 위해서 `res.data`가 아닌 `{...var}`로 저장하여 같은 주소를 바라보지 않게 하기 위함. 
+- todo 페이지(detail)에서 저장이 잘 되었으면 우측 상단에 notification 해주기.
+- bootstrap 4.5의 alert 사용하기.
 
 
 ## Reference
 
-- [lodash](https://www.npmjs.com/package/lodash)
-- `npm i lodash`
+- [bootstrap 4.5](https://getbootstrap.com/docs/4.5/components/alerts/)

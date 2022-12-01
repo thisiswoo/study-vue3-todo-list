@@ -13,7 +13,7 @@
 
 ### Description
 
-- vue.js 3 Lifecycle 사용하기.
+- vue.js 3 `Lifecycle` 사용하기.
 
 
 ## Reference

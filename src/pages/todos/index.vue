@@ -49,6 +49,11 @@
       </ul>
     </nav>
   </div>
+  <Toast
+      v-if="showToast"
+      :message="toastMessage"
+      :type="toastAlertType"
+    />
 </template>
 
 <script>
@@ -57,12 +62,15 @@ import axios from 'axios';
 // @는 src 경로를 의미함.
 import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
 import TodoList from "@/components/TodoList.vue";
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
   name: "App",
   components: {
     TodoSimpleForm,
     TodoList,
+    Toast,
   },
   setup() {
     const todos = ref([]);
@@ -76,6 +84,30 @@ export default {
       return Math.ceil(numberOfTodos.value / limit);
     });
 
+    // composables/toast.js에서 return해준 로직 받아 사용하기.
+    const {
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast
+    } = useToast();
+
+    // const toastMessage = ref('');
+    // const toastAlertType = ref('');
+    // const showToast = ref(false);
+    // const toastTimeout = ref(null);
+    // const triggerToast = (message, type = 'success') => {
+    //     toastMessage.value = message;
+    //     toastAlertType.value = type;
+    //     showToast.value = true;
+    //     toastTimeout.value = setTimeout(() => {
+    //         console.log('hello');
+    //         toastMessage.value = '';
+    //         toastAlertType.value = '';
+    //         showToast.value = false;
+    //     }, 3000);
+    // };
+
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
@@ -86,6 +118,7 @@ export default {
       } catch(err) {
         console.log(err);
         error.value = 'Someting went wrong.';
+        triggerToast('Someting went wrong', 'danger');
       }
     };
     // db.json에 있는 todos의 데이터 가져오기 실행.
@@ -103,6 +136,8 @@ export default {
         getTodos();
       } catch (err) {
         console.log('async err : ', err);
+        error.value = 'Someting went wrong.';
+        triggerToast('Someting went wrong', 'danger');
       }
       console.log('async end');
     };
@@ -116,6 +151,7 @@ export default {
         getTodos();
       } catch(err) {
         error.value = 'Someting went wrong.';
+        triggerToast('Someting went wrong', 'danger');
         console.log(err);
       }
     };
@@ -136,6 +172,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Someting went wrong.';
+        triggerToast('Someting went wrong', 'danger');
       }
     };
 
@@ -163,11 +200,13 @@ export default {
       parentsDeleteTodo,
       toggleTodo,
       searchText,
-      // filterTodos,
       error,
       numberOfPages,
       currentPage,
       getTodos,
+      toastMessage,
+      toastAlertType,
+      showToast,
     };
   },
 };

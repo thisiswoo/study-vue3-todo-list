@@ -54,22 +54,12 @@
         :message="toastMessage"
         :type="toastAlertType"
     />
-    <div id="thisis">woo</div>
 </template>
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import { 
-    ref, 
-    computed, 
-    onBeforeMount, 
-    onMounted, 
-    onBeforeUpdate, 
-    onUpdated, 
-    onBeforeUnmount, 
-    onUnmounted 
-} from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 
@@ -78,38 +68,6 @@ export default {
         Toast
     },
     setup() {
-        // DOM에 mount가 되기 전에 실행되는 함수.
-        onBeforeMount(() => {
-            // DOM에 mount가 되기 전에 실행 되기 때문에 null.
-            console.log(document.querySelector('#thisis'));
-        });
-        // DOM에 mount가 되었을때 실행되는 함수.
-        onMounted(() => {
-            // DOM에 mount가 된 후 실행 되기 때문에 위 id속성 값 출력.
-            console.log(document.querySelector('#thisis'));
-        });
-        // state가 update가 되기 전에 실행되는 함수.
-        onBeforeUpdate(() => {
-            console.log('before update');
-        });
-        // state가 update가 된 후 실행되는 함수.
-        onUpdated(() => {
-            console.log('updated');
-        });
-        // component가 존재하게 되면 onBeforeUnmount와 onUnmounted가 실행되지 않는다
-        onBeforeUnmount(() => {
-            console.log('before unmount');
-        });
-        // component가 존재하게 되면 onBeforeUnmount와 onUnmounted가 실행되지 않는다
-        // 메모리 누수를 방지하기 위해 많이 사용되는 함수.
-        onUnmounted(() => {
-            console.log('unmounted');
-        });
-
-        // hello가 먼저 찍히고 onBeforeMount()가 실행되는 이유는
-        // setup()가 onBeforeMount() 보다 먼저 실행 할 수 있는 것을 찾아 실행.
-        console.log('hello');
-
         const route = useRoute();
         const router = useRouter();
         const todo = ref(null);
@@ -118,7 +76,17 @@ export default {
         const showToast = ref(false);
         const toastMessage = ref('');
         const toastAlertType = ref('');
+        const timeout = ref(null);
         const todoId = route.params.id;
+
+        // component가 존재하게 되면 onBeforeUnmount와 onUnmounted가 실행되지 않는다
+        // 메모리 누수를 방지하기 위해 많이 사용되는 함수.
+        onUnmounted(() => {
+            console.log('unmounted');
+            // js clearTimeout()를 통해 아래 triggerToast() 함수의 setTimeout의 WEB APIs를 작동을 멈추어
+            // 무분별한 메모리 사용을 방지하기 위함. 
+            clearTimeout(timeout.value);
+        });
 
         const getTodo = async () => {
             try {
@@ -159,11 +127,12 @@ export default {
             toastMessage.value = message;
             toastAlertType.value = type;
             showToast.value = true;
-            setTimeout(() => {
+            timeout.value = setTimeout(() => {
+                console.log('hello');   // setTimeout 확인
                 toastMessage.value = '';
                 toastAlertType.value = '';
                 showToast.value = false;
-            }, 3000);
+            }, 2000);
         };
 
         const onSave = async () => {

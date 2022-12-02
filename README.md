@@ -13,9 +13,9 @@
 
 ### Description
 
-- vue.js 3 Lifecycle 사용하기.
+- onUnmounted() 함수를 통해 `메모리 누수` 방지하기.
 
 
 ## Reference
 
-- [Vue.js 3 Lifecycle](https://vuejs.org/api/composition-api-lifecycle.html)
+- [onUnmounted()](https://vuejs.org/api/composition-api-lifecycle.html)

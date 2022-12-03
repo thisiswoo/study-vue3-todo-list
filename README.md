@@ -13,4 +13,4 @@
 
 ### Description
 
-- todo를 생성하는 page를 따로 만들어 route 추가하기.
+- todo를 생성 page 만들기. ver1

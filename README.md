@@ -13,4 +13,5 @@
 
 ### Description
 
-- todo를 생성 또는 수정 시 subject에 validation check를 통해 빈 todo생성 막기.
+- style 태그에 대해 알아보기.
+- style 태그에 `scope`를 주어 global style을 해당 component에서만 사용할 수 있는 style로 주기.

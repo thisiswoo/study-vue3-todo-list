@@ -18,7 +18,7 @@
                     >
                     <div 
                         v-if="subjectError"
-                        style="color: red"
+                        class="text-red"
                     >
                         {{ subjectError }}
                     </div>
@@ -195,6 +195,13 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+/*
+    <style> : 해당 태그 안에 style을 지정해주면 global로 지정이됨.
+    <style scoped> : 해당 태그 안에 속성을 주어 style을 지정해 주면 
+                    해당 component안에서만 사용가능한 style로 지정이 됨.
+*/
+    .text-red {
+        color: red;
+    }
 </style>

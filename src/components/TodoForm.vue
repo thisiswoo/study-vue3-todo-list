@@ -16,6 +16,12 @@
                         class="form-control"
                         v-model="todo.subject"
                     >
+                    <div 
+                        v-if="subjectError"
+                        style="color: red"
+                    >
+                        {{ subjectError }}
+                    </div>
                 </div>
             </div>
             <div v-if="editing" class="col-6">
@@ -93,6 +99,7 @@ export default {
             computed: false,
             body: ''
         });
+        const subjectError = ref('');
         const originalTodo = ref(null);
         const loading = ref(false);
 
@@ -143,6 +150,11 @@ export default {
 
         // editing boolean을 이용하여 update, create 별 condition을 주어 로직 나누기.
         const onSave = async () => {
+            subjectError.value = '';
+            if (!todo.value.subject) {
+                subjectError.value = 'Subject is required';
+                return;
+            }
             try {
                 let res;    // 결과 응답 변수 만들어 주기.
                 const data = {
@@ -177,7 +189,7 @@ export default {
             todoUpdated,
             showToast,
             toastMessage,
-            toastAlertType,
+            toastAlertType,subjectError,
         };
     }
 };

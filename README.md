@@ -13,4 +13,4 @@
 
 ### Description
 
-- todo 생성 page 만들기. ver2
+- todo를 생성 또는 수정 시 subject에 validation check를 통해 빈 todo생성 막기.

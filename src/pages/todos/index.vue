@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button 
+        class="btn btn-primary"
+        @click="moveToCreatePage"
+      >
+        Create Todo
+      </button>
+    </div>
     <input
         class="form-control"
         type="text"
@@ -64,6 +72,7 @@ import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
 import TodoList from "@/components/TodoList.vue";
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import { useRouter } from 'vue-router';
 
 export default {
   name: "App",
@@ -73,6 +82,7 @@ export default {
     Toast,
   },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref('');
     const numberOfTodos = ref(0);
@@ -91,22 +101,6 @@ export default {
       showToast,
       triggerToast
     } = useToast();
-
-    // const toastMessage = ref('');
-    // const toastAlertType = ref('');
-    // const showToast = ref(false);
-    // const toastTimeout = ref(null);
-    // const triggerToast = (message, type = 'success') => {
-    //     toastMessage.value = message;
-    //     toastAlertType.value = type;
-    //     showToast.value = true;
-    //     toastTimeout.value = setTimeout(() => {
-    //         console.log('hello');
-    //         toastMessage.value = '';
-    //         toastAlertType.value = '';
-    //         showToast.value = false;
-    //     }, 3000);
-    // };
 
     // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async (page = currentPage.value) => {
@@ -176,6 +170,12 @@ export default {
       }
     };
 
+    const moveToCreatePage = () => {
+      router.push({
+        name: 'TodoCreate',
+      })
+    };
+
     let timeout = null;
     // keyup.enter 이벤트로 키보드 enter를 쳤을때 실행되는 함수.
     const searchTodo = () => {
@@ -207,6 +207,7 @@ export default {
       toastMessage,
       toastAlertType,
       showToast,
+      moveToCreatePage,
     };
   },
 };

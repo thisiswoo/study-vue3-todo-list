@@ -13,4 +13,4 @@
 
 ### Description
 
-- todo를 생성 page 만들기. ver1
+- todo 생성 page 만들기. ver2

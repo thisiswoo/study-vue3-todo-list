@@ -43,7 +43,11 @@
             class="btn btn-primary"
             :disabled="!todoUpdated"
         >
-            Save
+        <!-- 
+            editing이 true 이면 Update로 text 지정해주기,
+            editing이 false 이면 Create text 지정해주기,
+        -->
+            {{ editing ? 'Update' : 'Create' }}
         </button>
         <button 
             class="btn btn-outline-dark ml-2"
@@ -137,14 +141,27 @@ export default {
             getTodo();
         }
 
+        // editing boolean을 이용하여 update, create 별 condition을 주어 로직 나누기.
         const onSave = async () => {
             try {
-                const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
+                let res;    // 결과 응답 변수 만들어 주기.
+                const data = {
                     subject: todo.value.subject,
-                    completed: todo.value.completed
-                });
-                originalTodo.value = { ...res.data };
-                triggerToast('Successfully saved!');
+                    completed: todo.value.completed,
+                    body: todo.value.body,
+                };
+                // editing(true) 일 경우 즉, update(detail)일 경우 'put'요청 보내기
+                if (props.editing) {
+                    res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+                    originalTodo.value = { ...res.data };
+                } else {
+                    // editing(false) 일 경우 즉, create일 경우 'post'요청 보내기
+                    res = await axios.post(`http://localhost:3000/todos`, data);
+                    todo.value.subject = '';
+                    todo.value.body = '';
+                }
+                const message = 'Successfully ' + (props.editing ? 'Updated' : 'Created!');
+                triggerToast(message);
             } catch(error) {
                 console.log(error);
                 triggerToast('Someting went wrong', 'danger');

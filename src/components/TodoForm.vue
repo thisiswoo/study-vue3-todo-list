@@ -62,11 +62,16 @@
             Cancel
         </button>
     </form>
-    <Toast
-        v-if="showToast"
-        :message="toastMessage"
-        :type="toastAlertType"
-    />
+    <!-- 
+        <transition> 을 사용할때 name="아무이름"을 적어도 상관 없다.
+    -->
+    <transition name="fade">
+        <Toast
+            v-if="showToast"
+            :message="toastMessage"
+            :type="toastAlertType"
+        />
+    </transition>
 </template>
 
 <script>
@@ -204,4 +209,40 @@ export default {
     .text-red {
         color: red;
     }
+
+    /* 
+        transition 속성 주기.
+    */
+    .fade-enter-active,
+    .fade-leave-active {
+        /* 
+            opacity: 투명도가 점차 진해져서 0.5s 동안
+            ease: 살며시
+            => 투명도가 살며시 0.5초 동안 적용
+            속성이 하나만 있을땐 해당 속성(opacity) 만 적음.
+            두 개 이상일 땐 all 
+        */
+        /* transition: opacity 0.5s ease; */
+        transition: all 0.5s ease;
+    }
+
+    /* 
+        시작할 때 0으로 시작(즉, 안보이게(투명)) 
+    */
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+        /* 원래 위치에서 30px 위에서 시작하여 */
+        transform: translateY(-30px);   
+    }
+    /* 
+        끝날 때 1로 시작(즉, 보이게) 
+    */
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 1;
+        /* 원래 위치에서 위에서 끝나고 다시 시작 위치로 간다. */
+        transform: translateY(0px);
+    }
+
 </style>

@@ -9,7 +9,7 @@
       style="cursor: pointer"
       @click="moveToPage(t.id)"
     >
-      <div class="form-check flex-grow-1">
+      <div class="flex-grow-1">
         <!-- 
           * 주의 : @change.stop에 event를 주게 되면 작동하지 않음.
           vue : @click event에 .stop을 작성하여 event bubbling을 막는다 
@@ -20,18 +20,17 @@
           정확하게 하기 위해 event.target 값도 같이 부모 컴포넌트에 보내주기. 
         -->
         <input 
-          class="form-check-input" 
+          class="ml-2 mr-2"
           type="checkbox" 
           :checked="t.completed" 
           @change="toggleTodo(index, $event)"
           @click.stop
         />
-        <label 
-          class="form-check-label" 
+        <span 
           :class="{ todo: t.completed }"
         >
           {{ t.subject }}
-        </label>
+        </span>
       </div>
       <div>
         <!-- 

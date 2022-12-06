@@ -10,15 +10,6 @@
       @click="moveToPage(t.id)"
     >
       <div class="flex-grow-1">
-        <!-- 
-          * 주의 : @change.stop에 event를 주게 되면 작동하지 않음.
-          vue : @click event에 .stop을 작성하여 event bubbling을 막는다 
-          javascript : event.stopPropagation() 임.
-
-          toggleTodo(index)에 index 값만 부모 컴포넌트에 보내주어 반대되는 값을 주어
-          로직을 구성하게 되는데, 다른 곳에서도 사용할 수 있게 되면 혼란이 될 수 있기 때문에
-          정확하게 하기 위해 event.target 값도 같이 부모 컴포넌트에 보내주기. 
-        -->
         <input 
           class="ml-2 mr-2"
           type="checkbox" 
@@ -33,26 +24,34 @@
         </span>
       </div>
       <div>
-        <!-- 
-          vue : @click event에 .stop을 작성하여 event bubbling을 막는다 
-          javascript : event.stopPropagation() 임.
-        -->
-        <button 
+        <!-- <button 
           class="btn btn-danger btn-sm" 
           @click.stop="childDeleteTodo(index)"
+        > -->
+        <button 
+          class="btn btn-danger btn-sm" 
+          @click.stop="openModal(t.id)"
         >
           Delete
         </button>
       </div>
     </div>
   </div>
+  <Modal 
+    v-if="showModal"
+    @close="closeModal"
+  />
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
+import Modal from '@/components/Modal.vue';
+import { ref } from 'vue';
 
 export default {
-  name: "StudyVue3TodoListTodoList",
+  components: {
+    Modal,
+  },
   props: {
     todos: {
       type: Array,
@@ -62,13 +61,21 @@ export default {
   emits: ['toggle-todo', 'child-delete-todo'],
   setup(props, { emit }) {
     const router = useRouter();
+    const showModal = ref(false);
+    const todoDeleteId = ref(null);
 
-    // toggleTodo(index)에 index 값만 부모 컴포넌트에 보내주어 반대되는 값을 주어
-    // 로직을 구성하게 되는데, 다른 곳에서도 사용할 수 있게 되면 혼란이 될 수 있기 때문에
-    // 정확하게 하기 위해 event.target 값도 같이 부모 컴포넌트에 보내주기. 
     const toggleTodo = (index, event) => {
-      // checked 가 되면 true, checked가 되지 않으면 false
       emit("toggle-todo", index, event.target.checked);
+    };
+
+    const openModal = (id) => {
+      todoDeleteId.value = id;
+      showModal.value = true;
+    };
+
+    const closeModal = () => {
+      todoDeleteId.value = null;
+      showModal.value = false;
     };
 
     const childDeleteTodo = (index) => {
@@ -97,6 +104,9 @@ export default {
       toggleTodo,
       childDeleteTodo,
       moveToPage,
+      showModal,
+      openModal,
+      closeModal,
     }
   }
 };

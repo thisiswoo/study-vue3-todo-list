@@ -13,4 +13,8 @@
 
 ### Description
 
-- Todo list에서 todo 영역은 css가 잘 먹지만, todo list text 영역은 css가 먹지 않는 오류 수정하기.
+- `modal` 컴포넌트 만들기.
+
+### Reference
+
+- [Modal](https://getbootstrap.com/docs/4.5/components/modal/)

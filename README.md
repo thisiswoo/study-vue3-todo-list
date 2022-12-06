@@ -13,7 +13,7 @@
 
 ### Description
 
-- `modal`창을 이용하여 Todo 삭제하기.
+- vue3에서 기능이 추가된 `teleport`를 알아보기.
 
 ### Reference
 

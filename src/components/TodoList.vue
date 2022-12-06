@@ -37,11 +37,19 @@
       </div>
     </div>
   </div>
-  <Modal 
-    v-if="showModal"
-    @close="closeModal"
-    @delete="childDeleteTodo"
-  />
+  <!-- 
+    최상위 index.html의 id가 modal인 div로 teleport하여 
+    부모 컴포넌트인 index.vue(pages/todo/index.vue)의 
+    최상위 div의 스타일 style="opacity: 0.5"를 적용 안되게 하기.
+
+  -->
+  <teleport to="#modal">
+    <Modal 
+      v-if="showModal"
+      @close="closeModal"
+      @delete="childDeleteTodo"
+    />
+  </teleport>
 </template>
 
 <script>

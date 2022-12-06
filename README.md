@@ -13,8 +13,4 @@
 
 ### Description
 
-- vue3에서 기능이 추가된 `teleport`를 알아보기.
-
-### Reference
-
-- [Modal](https://getbootstrap.com/docs/4.5/components/modal/)
+- `slot`에 대해 알아보기.

@@ -44,6 +44,10 @@
 
   -->
   <teleport to="#modal">
+    <!-- 
+      slot을 사용하기 위해 import한 component 태그를 </>(닫는 태그)를 만들어 주어
+      안에다가 text를 작성한다.
+    -->
     <Modal 
       v-if="showModal"
       @close="closeModal"
@@ -54,7 +58,7 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import Modal from '@/components/Modal.vue';
+import Modal from '@/components/DeleteModal.vue';
 import { ref } from 'vue';
 
 export default {

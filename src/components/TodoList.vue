@@ -40,6 +40,7 @@
   <Modal 
     v-if="showModal"
     @close="closeModal"
+    @delete="childDeleteTodo"
   />
 </template>
 
@@ -78,23 +79,16 @@ export default {
       showModal.value = false;
     };
 
-    const childDeleteTodo = (index) => {
-      emit("child-delete-todo", index);
+    const childDeleteTodo = () => {
+      emit("child-delete-todo", todoDeleteId.value);
+      showModal.value = false;
+      todoDeleteId.value = null;
     };
 
     const moveToPage = (todoId) => {
-      // 원하는 페이지로 이동
-      console.log(todoId);
-
-      // router.push('/todos/' + todoId);
-
-      // 위 코드처럼 짧게 사용할 수 있지만 아래 처럼 object를 사용하는 이유는
-      // 프로젝트가 커지게 되면 짧게 코드를 작성 했을때 만약 path의 경로가 바뀌게 되면
-      // 짧은 코드 모두 바꿔야 하지만 object 형식으로 하게 되면 index.js의 path 경로만 바꿔주면 된다.
       router.push({
         name: 'Todo',
         params: {
-          // index.js에서 router path에서 `path: '/todos/:id'`에서 적어준 id
           id: todoId
         }
       });

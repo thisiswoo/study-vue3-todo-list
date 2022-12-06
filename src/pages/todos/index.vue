@@ -133,9 +133,8 @@ export default {
     };
 
     // DB에 todo data 삭제하기.
-    const parentsDeleteTodo = async (index) => {
+    const parentsDeleteTodo = async (id) => {
       error.value = '';
-      const id = todos.value[index].id;
       try {
         await axios.delete('http://localhost:3000/todos/' + id);  // 삭제가 성공하면
         getTodos();

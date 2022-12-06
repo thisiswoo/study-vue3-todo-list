@@ -49,22 +49,6 @@
       "subject": "buy milk",
       "body": "buy milk supermarket",
       "id": 13
-    },
-    {
-      "subject": "asfasdf",
-      "body": "sdfsaf",
-      "id": 14
-    },
-    {
-      "subject": "sadf",
-      "completed": true,
-      "body": "asdfasdfsdfasdf",
-      "id": 15
-    },
-    {
-      "subject": "asdfsdf",
-      "body": "asddddf",
-      "id": 16
     }
   ]
 }

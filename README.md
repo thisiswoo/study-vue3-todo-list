@@ -13,7 +13,7 @@
 
 ### Description
 
-- `modal` 컴포넌트 만들기.
+- `modal`창을 이용하여 Todo 삭제하기.
 
 ### Reference
 

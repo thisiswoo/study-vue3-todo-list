@@ -32,18 +32,13 @@
     },
     {
       "subject": "10",
-      "completed": false,
+      "completed": true,
       "id": 10
     },
     {
       "subject": "11",
-      "completed": false,
-      "id": 11
-    },
-    {
-      "subject": "12",
       "completed": true,
-      "id": 12
+      "id": 11
     }
   ]
 }

@@ -1,42 +1,60 @@
 <template>
-  <div 
+  <!-- <div 
     v-for="(t, index) in todos" 
     :key="t.id" 
     class="card mt-2"
+  > -->
+  <List
+    :items="todos"
   >
-    <div 
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor: pointer"
-      @click="moveToPage(t.id)"
-    >
-      <div class="flex-grow-1">
-        <input 
-          class="ml-2 mr-2"
-          type="checkbox" 
-          :checked="t.completed" 
-          @change="toggleTodo(index, $event)"
-          @click.stop
-        />
-        <span 
-          :class="{ todo: t.completed }"
-        >
-          {{ t.subject }}
-        </span>
+    <!-- 
+      이름을 저장하지 않으면 default로 저장됨.
+      <template v-slot:default>
+      아래 "slotProps" 안에 List.vue에서 보내온 item이 객체로 정보가 담겨 있다.
+      또한 객체를 받은것 중 원하는 것만 빼서 사용도 가능함.
+    -->
+    <!-- <template #default="slotProps"> -->
+    <template #default="{ item, index }">
+      <!-- <div 
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor: pointer"
+        @click="moveToPage(t.id)"
+      > -->
+      <div 
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor: pointer"
+        @click="moveToPage(item.id)"
+      >
+        <div class="flex-grow-1">
+          <input 
+            class="ml-2 mr-2"
+            type="checkbox" 
+            :checked="item.completed" 
+            @change="toggleTodo(index, $event)"
+            @click.stop
+          />
+          <span 
+            :class="{ todo: item.completed }"
+          >
+            {{ item.subject }}
+          </span>
+        </div>
+        <div>
+          <!-- <button 
+            class="btn btn-danger btn-sm" 
+            @click.stop="childDeleteTodo(index)"
+          > -->
+          <button 
+            class="btn btn-danger btn-sm" 
+            @click.stop="openModal(item.id)"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-      <div>
-        <!-- <button 
-          class="btn btn-danger btn-sm" 
-          @click.stop="childDeleteTodo(index)"
-        > -->
-        <button 
-          class="btn btn-danger btn-sm" 
-          @click.stop="openModal(t.id)"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
+    <!-- </div> -->
+    </template>
+  </List>
   <!-- 
     최상위 index.html의 id가 modal인 div로 teleport하여 
     부모 컴포넌트인 index.vue(pages/todo/index.vue)의 
@@ -60,10 +78,12 @@
 import { useRouter } from 'vue-router';
 import Modal from '@/components/DeleteModal.vue';
 import { ref } from 'vue';
+import List from '@/components/List.vue';
 
 export default {
   components: {
     Modal,
+    List,
   },
   props: {
     todos: {

@@ -2,27 +2,35 @@
     <div v-if="loading">
         Loading...
     </div>
-    <!-- form 태그 안에 버튼이 있는 경우 그 버튼을 누를 경우 sumbmit이 된다. -->
     <form 
         v-else
         @submit.prevent="onSave"
     >
         <div class="row">
             <div class="col-6">
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input 
-                        type="text" 
-                        class="form-control"
-                        v-model="todo.subject"
-                    >
-                    <div 
-                        v-if="subjectError"
-                        class="text-red"
-                    >
-                        {{ subjectError }}
-                    </div>
-                </div>
+                <!-- 
+                    todo.subject를 props로 input.vue에 내려줄때
+                    아래 주석한것처럼 길게 사용할 필요 없이
+                    v-model:props{}에서 정의한 object를 적게 되면
+                    간편해 진다.
+                -->
+                <!-- <Input 
+                    label="subject"
+                    v-model="todo.subject"
+                    :subject="todo.subject"
+                    :error="subjectError"
+                    @update-subject="updateTodoSubject"
+                /> -->
+                <!-- 
+                    만약 여러개의 양방향 바인딩이 필요할땐 
+                    v-model:props{}에서 정의한 object를 여러개 지정하여
+                    구현할 수 있다.
+                -->
+                <Input 
+                    label="subject"
+                    v-model:subject="todo.subject"
+                    :error="subjectError"
+                />
             </div>
             <div v-if="editing" class="col-6">
                 <div class="form-group">
@@ -49,10 +57,6 @@
             class="btn btn-primary"
             :disabled="!todoUpdated"
         >
-        <!-- 
-            editing이 true 이면 Update로 text 지정해주기,
-            editing이 false 이면 Create text 지정해주기,
-        -->
             {{ editing ? 'Update' : 'Create' }}
         </button>
         <button 
@@ -62,9 +66,6 @@
             Cancel
         </button>
     </form>
-    <!-- 
-        <transition> 을 사용할때 name="아무이름"을 적어도 상관 없다.
-    -->
     <transition name="fade">
         <Toast
             v-if="showToast"
@@ -77,25 +78,23 @@
 <script>
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import Input from '@/components/input.vue';
 
 export default {
     components: {
         Toast,
+        Input,
     },
     props: {
-        // TodoForm을 creating page와 editing page로 나누기 위함
         editing: {
-            // false면 creating page로 사용.
-            // true면 editing page로 사용.
             type: Boolean,
             default: false,
         }
     },
-    // setup() 함수에 인자로 'props'를 받아와 props 데이터에 접근이 가능해짐.
     setup(props) {
         const route = useRoute();
         const router = useRouter();
@@ -104,11 +103,15 @@ export default {
             computed: false,
             body: ''
         });
+        // vue lifecycle의 onUpdated를 이용하여 input.vue의 component의
+        // 값이 잘 바뀌는지(update가 되는지) 확인.
+        onUpdated(() => {
+            console.log(todo.value.subject);
+        });
         const subjectError = ref('');
         const originalTodo = ref(null);
         const loading = ref(false);
 
-        // composables/toast.js에서 return해준 로직 받아 사용하기.
         const {
             toastMessage,
             toastAlertType,
@@ -117,6 +120,12 @@ export default {
         } = useToast();
 
         const todoId = route.params.id;
+
+        // component로 뺀 input의 subject 제목을 부모 컴포넌트의 함수로 정의.
+        // const updateTodoSubject = (newVal) => {
+        //     todo.value.subject = newVal;
+        //     console.log(todo.value.subject);
+        // };
 
         const getTodo = async () => {
             loading.value = true;
@@ -136,24 +145,20 @@ export default {
             return !_.isEqual(todo.value, originalTodo.value);
         });
 
-        // 상태변경
         const toggleTodoStatus = () => {
             todo.value.completed = !todo.value.completed;
         };
 
-        // cancel 버튼 클릭시 useRouter를 이용한 페이지 이동
         const moveToTodoListPage = () => {
             router.push({
                 name: 'Todos'
             });
         };
 
-        // condition을 주어 props.editing이 'true'이면(즉, editing(detail)) getTodo() 함수 실행.
         if (props.editing) {
             getTodo();
         }
 
-        // editing boolean을 이용하여 update, create 별 condition을 주어 로직 나누기.
         const onSave = async () => {
             subjectError.value = '';
             if (!todo.value.subject) {
@@ -161,18 +166,16 @@ export default {
                 return;
             }
             try {
-                let res;    // 결과 응답 변수 만들어 주기.
+                let res;    
                 const data = {
                     subject: todo.value.subject,
                     completed: todo.value.completed,
                     body: todo.value.body,
                 };
-                // editing(true) 일 경우 즉, update(detail)일 경우 'put'요청 보내기
                 if (props.editing) {
                     res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
                     originalTodo.value = { ...res.data };
                 } else {
-                    // editing(false) 일 경우 즉, create일 경우 'post'요청 보내기
                     res = await axios.post(`http://localhost:3000/todos`, data);
                     todo.value.subject = '';
                     todo.value.body = '';
@@ -194,54 +197,28 @@ export default {
             todoUpdated,
             showToast,
             toastMessage,
-            toastAlertType,subjectError,
+            toastAlertType,
+            subjectError,
+            // updateTodoSubject,
         };
     }
 };
 </script>
 
 <style scoped>
-/*
-    <style> : 해당 태그 안에 style을 지정해주면 global로 지정이됨.
-    <style scoped> : 해당 태그 안에 속성을 주어 style을 지정해 주면 
-                    해당 component안에서만 사용가능한 style로 지정이 됨.
-*/
-    .text-red {
-        color: red;
-    }
-
-    /* 
-        transition 속성 주기.
-    */
     .fade-enter-active,
     .fade-leave-active {
-        /* 
-            opacity: 투명도가 점차 진해져서 0.5s 동안
-            ease: 살며시
-            => 투명도가 살며시 0.5초 동안 적용
-            속성이 하나만 있을땐 해당 속성(opacity) 만 적음.
-            두 개 이상일 땐 all 
-        */
-        /* transition: opacity 0.5s ease; */
         transition: all 0.5s ease;
     }
 
-    /* 
-        시작할 때 0으로 시작(즉, 안보이게(투명)) 
-    */
     .fade-enter-from,
     .fade-leave-to {
         opacity: 0;
-        /* 원래 위치에서 30px 위에서 시작하여 */
         transform: translateY(-30px);   
     }
-    /* 
-        끝날 때 1로 시작(즉, 보이게) 
-    */
     .fade-enter-to,
     .fade-leave-from {
         opacity: 1;
-        /* 원래 위치에서 위에서 끝나고 다시 시작 위치로 간다. */
         transform: translateY(0px);
     }
 

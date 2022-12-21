@@ -19,12 +19,15 @@
 
 <script>
 import { ref } from "vue";
+import { getCurrentInstance } from 'vue'; // getCurrentInstance()를 통해 emit 사용하기
 
 export default {
   emits: ['add-todo'],
-  // 자식 컴포넌트에서 부모컴포넌트로 데이터를 보낼때 필요한게 'context'안에 들어있다.
-  // context -> { emit }으로 객체 구조분해를 통해 emit으로 사용하기.
-  setup(props, { emit }) {
+  // setup(props, { emit }) {
+  setup() {
+    // getCurrentInstance()를 통해 emit 사용하기
+    const { emit } = getCurrentInstance();
+
     const todo = ref("");
     const hasError = ref(false);
 

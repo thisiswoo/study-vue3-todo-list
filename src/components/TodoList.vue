@@ -79,6 +79,7 @@ import { useRouter } from 'vue-router';
 import Modal from '@/components/DeleteModal.vue';
 import { ref } from 'vue';
 import List from '@/components/List.vue';
+import { getCurrentInstance } from 'vue'; // getCurrentInstance()를 통해 emit 사용하기
 
 export default {
   components: {
@@ -92,7 +93,11 @@ export default {
     },
   },
   emits: ['toggle-todo', 'child-delete-todo'],
-  setup(props, { emit }) {
+  // setup(props, { emit }) {
+  setup() {
+    // getCurrentInstance()를 통해 emit 사용하기
+    const { emit } = getCurrentInstance();
+
     const router = useRouter();
     const showModal = ref(false);
     const todoDeleteId = ref(null);

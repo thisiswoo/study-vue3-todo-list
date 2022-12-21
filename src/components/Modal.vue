@@ -30,8 +30,14 @@
 </template>
 
 <script>
+import { getCurrentInstance } from 'vue';   // getCurrentInstance()를 통해 emit 사용하기
+
 export default {
-    setup(props, { emit }) {
+    // setup(props, { emit }) {
+    setup() {
+        // getCurrentInstance()를 통해 emit 사용하기
+        const { emit } = getCurrentInstance();
+
         const onClose = () => {
             emit('close');
         };

@@ -13,15 +13,9 @@
 
 ### Description
 
-- vue 3.2v에서 `useContext`가 deprecated될 예정으로 인한 기능 `useContext` -> `getCurrentInstance` 또는 기존 `setup(props, {emit})`을 통해 `emit`을 사용하기.
-
-### Reference
-
-- [Multiple v-model](https://vuejs.org/guide/components/events.html#multiple-v-model-bindings)
+- vue 3.2v에서 `useContext가 deprecated될 예정`으로 인한 기능 `useContext` -> `getCurrentInstance()` 또는 기존 `setup(props, {emit})`을 통해 `emit`을 사용하기.
 
 ### Exemple
-
-- `v-model` 바인딩이 1개인 경우.
 
 - **getCurrentInstance 사용 방법 예시**
 ```vue

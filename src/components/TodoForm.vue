@@ -59,7 +59,6 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-// import axios from 'axios';   
 import axios from '@/axios';    // axios.js 파일의 axios를 가져와 사용하기.
 import { ref, computed, onUpdated } from 'vue';
 import _ from 'lodash';
@@ -105,7 +104,6 @@ export default {
         const getTodo = async () => {
             loading.value = true;
             try {
-                // baseUrl을 통해 해당 url경로만 지정해주기.
                 const res = await axios.get(`todos/${todoId}`);
                 todo.value = { ...res.data };
                 originalTodo.value = { ...res.data };
@@ -149,17 +147,25 @@ export default {
                     body: todo.value.body,
                 };
                 if (props.editing) {
-                    // baseUrl을 통해 해당 url경로만 지정해주기.
                     res = await axios.put(`todos/${todoId}`, data);
                     originalTodo.value = { ...res.data };
                 } else {
-                    // baseUrl을 통해 해당 url경로만 지정해주기.
                     res = await axios.post('todos', data);
                     todo.value.subject = '';
                     todo.value.body = '';
                 }
+
+                // 성공 메시지가 뜨긴하지만 아래 condition을 이용하여 router로 페이지 이동되어
+                // component가 사라지기 때문에 눈에 보이지 않고 안뜬것처럼 느껴지는 것.
                 const message = 'Successfully ' + (props.editing ? 'Updated' : 'Created!');
                 triggerToast(message);
+                
+                // "!porps.editing"아닐때 즉, 새로운 todo일때 router를 이용하여 list 페이지 이동시키기
+                if (!props.editing) {
+                    router.push({
+                        name: 'Todos'
+                    });
+                }
             } catch(error) {
                 console.log(error);
                 triggerToast('Someting went wrong', 'danger');

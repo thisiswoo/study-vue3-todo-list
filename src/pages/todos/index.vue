@@ -64,7 +64,8 @@
 
 <script>
 import { ref, computed, watch } from "vue";
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '@/axios';  // axios.js 파일의 axios를 가져와 사용하기.
 // @는 src 경로를 의미함.
 import TodoList from "@/components/TodoList.vue";
 import Toast from '@/components/Toast.vue';
@@ -90,7 +91,6 @@ export default {
       return Math.ceil(numberOfTodos.value / limit);
     });
 
-    // composables/toast.js에서 return해준 로직 받아 사용하기.
     const {
       toastMessage,
       toastAlertType,
@@ -98,11 +98,11 @@ export default {
       triggerToast
     } = useToast();
 
-    // db.json에 있는 todos의 데이터를 모두 가져오기.
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
+        // baseUrl을 통해 해당 url경로만 지정해주기.
+        const res = await axios.get(`todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`);
         numberOfTodos.value = res.headers[`x-total-count`]; // db의 총 todo 개수
         todos.value = res.data;
       } catch(err) {
@@ -111,15 +111,14 @@ export default {
         triggerToast('Someting went wrong', 'danger');
       }
     };
-    // db.json에 있는 todos의 데이터 가져오기 실행.
     getTodos();
 
-    // DB에 todo 저장. 비동기
     const addTodo = async (todo) => {
       error.value = '';
       console.log('async start');
       try {
-        await axios.post('http://localhost:3000/todos', {
+        // baseUrl을 통해 해당 url경로만 지정해주기.
+        await axios.post('todos', {
           subject: todo.subject,
           completed: todo.completed,
         });
@@ -132,11 +131,11 @@ export default {
       console.log('async end');
     };
 
-    // DB에 todo data 삭제하기.
     const parentsDeleteTodo = async (id) => {
       error.value = '';
       try {
-        await axios.delete('http://localhost:3000/todos/' + id);  // 삭제가 성공하면
+        // baseUrl을 통해 해당 url경로만 지정해주기.
+        await axios.delete('todos/' + id);  // 삭제가 성공하면
         getTodos();
       } catch(err) {
         error.value = 'Someting went wrong.';
@@ -145,18 +144,15 @@ export default {
       }
     };
 
-    // 자식에서 받아온 event.target.checked 값 인자로 받아 명확하게 값 바꾸어주기.
     const toggleTodo = async (index, checked) => {
-      // 자식에서 받아온 checked 값 확인
       console.log(checked);
       error.value = '';
       const id = todos.value[index].id;
       try {
-        await axios.patch('http://localhost:3000/todos/' + id, {
-          // completed: !todos.value[index].completed
+        // baseUrl을 통해 해당 url경로만 지정해주기.
+        await axios.patch('todos/' + id, {
           completed: checked
         });
-        // todos.value[index].completed = !todos.value[index].completed;
         todos.value[index].completed = checked;
       } catch (err) {
         console.log(err);
@@ -172,20 +168,16 @@ export default {
     };
 
     let timeout = null;
-    // keyup.enter 이벤트로 키보드 enter를 쳤을때 실행되는 함수.
     const searchTodo = () => {
-      // clearTimeout으로 초기화.
       clearTimeout(timeout);
       getTodos(1);
     };
-    // searchText가 변경 되면 watch 함수가 실행.
+
     watch(searchText, () => {
-      // 시작하자 마자 clearTimeout으로 초기화.
       clearTimeout(timeout);
-      // 2초 후 실행하게 하기.
       timeout = setTimeout(() => {
         getTodos(1);
-      }, 2000)  // 2초 후 실행
+      }, 2000) 
     });
 
     return {
@@ -209,7 +201,6 @@ export default {
 </script>
 
 <style>
-/* class binding */
 .todo {
   color: gray;
   text-decoration: line-through;

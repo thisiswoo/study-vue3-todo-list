@@ -33,12 +33,8 @@
     {
       "subject": "10",
       "completed": false,
+      "body": "ㅎㅇㄹㅎㄴㄹㅎ",
       "id": 10
-    },
-    {
-      "subject": "11",
-      "completed": true,
-      "id": 11
     }
   ]
 }

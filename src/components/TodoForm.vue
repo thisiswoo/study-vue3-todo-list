@@ -8,24 +8,6 @@
     >
         <div class="row">
             <div class="col-6">
-                <!-- 
-                    todo.subject를 props로 input.vue에 내려줄때
-                    아래 주석한것처럼 길게 사용할 필요 없이
-                    v-model:props{}에서 정의한 object를 적게 되면
-                    간편해 진다.
-                -->
-                <!-- <Input 
-                    label="subject"
-                    v-model="todo.subject"
-                    :subject="todo.subject"
-                    :error="subjectError"
-                    @update-subject="updateTodoSubject"
-                /> -->
-                <!-- 
-                    만약 여러개의 양방향 바인딩이 필요할땐 
-                    v-model:props{}에서 정의한 object를 여러개 지정하여
-                    구현할 수 있다.
-                -->
                 <Input 
                     label="subject"
                     v-model:subject="todo.subject"
@@ -77,7 +59,8 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+// import axios from 'axios';   
+import axios from '@/axios';    // axios.js 파일의 axios를 가져와 사용하기.
 import { ref, computed, onUpdated } from 'vue';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
@@ -103,8 +86,6 @@ export default {
             computed: false,
             body: ''
         });
-        // vue lifecycle의 onUpdated를 이용하여 input.vue의 component의
-        // 값이 잘 바뀌는지(update가 되는지) 확인.
         onUpdated(() => {
             console.log(todo.value.subject);
         });
@@ -121,16 +102,11 @@ export default {
 
         const todoId = route.params.id;
 
-        // component로 뺀 input의 subject 제목을 부모 컴포넌트의 함수로 정의.
-        // const updateTodoSubject = (newVal) => {
-        //     todo.value.subject = newVal;
-        //     console.log(todo.value.subject);
-        // };
-
         const getTodo = async () => {
             loading.value = true;
             try {
-                const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+                // baseUrl을 통해 해당 url경로만 지정해주기.
+                const res = await axios.get(`todos/${todoId}`);
                 todo.value = { ...res.data };
                 originalTodo.value = { ...res.data };
                 loading.value = false;
@@ -173,10 +149,12 @@ export default {
                     body: todo.value.body,
                 };
                 if (props.editing) {
-                    res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+                    // baseUrl을 통해 해당 url경로만 지정해주기.
+                    res = await axios.put(`todos/${todoId}`, data);
                     originalTodo.value = { ...res.data };
                 } else {
-                    res = await axios.post(`http://localhost:3000/todos`, data);
+                    // baseUrl을 통해 해당 url경로만 지정해주기.
+                    res = await axios.post('todos', data);
                     todo.value.subject = '';
                     todo.value.body = '';
                 }
@@ -199,7 +177,6 @@ export default {
             toastMessage,
             toastAlertType,
             subjectError,
-            // updateTodoSubject,
         };
     }
 };

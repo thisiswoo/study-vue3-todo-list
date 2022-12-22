@@ -13,23 +13,11 @@
 
 ### Description
 
-- 재사용할 수 있는 로직들을 composables폴더에 `composition function`으로 빼내서 재사용 하고 있는데, 이때 reactive를 return해서 사용 할 때 가끔씩 reactivity가 끊어질 때가 있는데 이때 `toRefs`를 통해 해결하기.
-
-```javascript
-// js의 import 방법이 두 가지가 있다.
-
-import { 함수명 } from '함수명파일이 있는 경로';
-export const 함수명 = () => {
-    //...
-}
-
-import 함수명 from '함수명파일이 있는 경로';
-export defatul 함수명 = () => {
-    // ...
-}
-
-```
+- axios를 통해 비동기, back-end 작업 여러 군데에서 하고 있는데 url이 localhost:3000로 작업하고 있다.
+나중에 production 라이브 웹 사이트에 build 하여 올리게 되면 해당 url이 localhost:3000 요청되게 되는데 production에 올라가게 되면 보통 back-end의 url이 바뀌게 된다.
+그때마다 axios 요청을 보낸 곳마다 찾아서 url을 변경해 줘야 하는 번거로움이 발생할 수 있다.
+또한 프로젝트의 규모가 커질수록 axios 요청이 많아지기 때문에 **기본url(baseUrl)**을 한곳에 만들어 놓고 가져다 사용하는 방법을 알아보기.
 
 ### Reference
 
-- [toRefs](https://vuejs.org/api/reactivity-utilities.html#toref)
+- [axios](https://www.npmjs.com/package/axios)

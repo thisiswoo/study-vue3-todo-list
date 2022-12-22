@@ -13,42 +13,23 @@
 
 ### Description
 
-- vue 3.2v에서 `useContext`가 deprecated될 예정으로 인한 기능 `useContext` -> `getCurrentInstance` 또는 기존 `setup(props, {emit})`을 통해 `emit`을 사용하기.
+- 재사용할 수 있는 로직들을 composables폴더에 `composition function`으로 빼내서 재사용 하고 있는데, 이때 reactive를 return해서 사용 할 때 가끔씩 reactivity가 끊어질 때가 있는데 이때 `toRefs`를 통해 해결하기.
+
+```javascript
+// js의 import 방법이 두 가지가 있다.
+
+import { 함수명 } from '함수명파일이 있는 경로';
+export const 함수명 = () => {
+    //...
+}
+
+import 함수명 from '함수명파일이 있는 경로';
+export defatul 함수명 = () => {
+    // ...
+}
+
+```
 
 ### Reference
 
-- [Multiple v-model](https://vuejs.org/guide/components/events.html#multiple-v-model-bindings)
-
-### Exemple
-
-- `v-model` 바인딩이 1개인 경우.
-
-- **getCurrentInstance 사용 방법 예시**
-```vue
-<script>
-import { getCurrentInstance } from 'vue';
-export default {
-    props: {
-        numberOfPages: {
-            type: Number,
-            required: true
-        },
-        currentPage: {
-            type: Number,
-            required: true
-        }
-    },
-    emits: ['click'],
-    setup() {
-        const { emit } = getCurrentInstance();
-        const onClick = (page) => {
-            emit('click', page)
-        };
-
-        return {
-            onClick
-        }
-    }
-}
-</script>
-```
+- [toRefs](https://vuejs.org/api/reactivity-utilities.html#toref)

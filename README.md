@@ -13,18 +13,66 @@
 
 ### Description
 
-- `Toas.js`에서 사용하는 `state`를 `vuex`로 refactoring 하기.
+#### Mutations
+
+> “The only way to actually change state in a Vuex store is by committing a mutation.” - [vuex - mutations](https://vuex.vuejs.org/guide/mutations.html)
+
+- 위 vuex 공식 홈페이지의 mutations소개 글을 번역하자면 “`vuex`안에 있는 `state`를 변경할 수 있는 유일한 방법으로 `mutations`이다.” 라고 한다.
+
 ```javascript
-import { computed } from 'vue';
-import { useStore } from 'vuex';    // vuex의 store를 사용
+// mutations
+const store = createStore({
+    state: {
+        count: 1
+  },
+  mutations: {
+      increment (state) {
+          // mutate state
+      state.count++
+    }
+  }
+});
+```
 
-// 이렇게 값만 가져오게 되면 변경된 값을 vuex가 감지를 하지 못하게 된다.
-const toastMessage = store.state.toastMessage;
+- `mutations`는 항상 `동기적`으로 작동해야 한다.
+- `mutations`는 `debugging` 목적 때문에 `동기적`으로 사용.
 
-// computed로 감싸주어 변겨된 값을 vuex에서 인지하게 하기.
-const toastMessage = computed(() => store.state.toastMessage);
+```javascript
+// Mutations Must Be Synchronous
+mutations: {
+  someMutation (state) {
+    api.callAsyncMethod(() => {
+      state.count++
+    })
+  }
+};
+```
+
+#### Actions
+> “`vuex`에서 사용하는 함수라고 생각하면 된다. ”
+
+- mutations에서만 state값이 변경 가능하기 때문에 `actions는 mutations를 commit 하여 state를 변경`할 수 있다.
+- `actions`는 mutations과 다르게 `비동기` 작업을 할 수 있다.
+
+```javascript
+const store = createStore({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit('increment')
+    }
+  }
+});
 ```
 
 ### Reference
 
-- [vuex - state](https://vuex.vuejs.org/guide/state.html#single-state-tree)
+- [vuex - mutations](https://vuex.vuejs.org/guide/mutations.html)
+- [vuex - actions](https://vuex.vuejs.org/guide/actions.html)

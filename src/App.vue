@@ -44,6 +44,8 @@ export default {
         triggerToast
     } = useToast();
 
+    console.log(showToast.value);
+
     return {
       toastMessage,
       toastAlertType,

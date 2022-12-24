@@ -72,7 +72,35 @@ const store = createStore({
 });
 ```
 
+#### Getters
+> “getters는 component안에서 사용하는 computed와 같다고 생각하면 된다. veux에서 사용하는 computed라고 생각하면 된다.”
+
+```javascript
+const store = createStore({
+  state: {
+    todos: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false }
+    ]
+  },
+  getters: {
+    doneTodos (state) {
+      return state.todos.filter(todo => todo.done)
+    }
+  }
+})
+```
+
 ### Reference
 
 - [vuex - mutations](https://vuex.vuejs.org/guide/mutations.html)
 - [vuex - actions](https://vuex.vuejs.org/guide/actions.html)
+- [vuex - getters](https://vuex.vuejs.org/guide/actions.html)
+
+## 정리
+
+- `vuex`는 vuejs 안에 있는 어떠한 component에도 접근이 가능한 **`state`를 관리하는 tool**이다.
+- 어떤 **`component에서든지 store의 state에 접근이 가능`**하다.
+- **`state는 mutations을 통해서만 변경이 가능`**하다.
+- 함수(function)는 **`acrions에서 정의하여 사용 가능`**하다.
+- **`getters 는 component에서 사용하는 computed의 기능과 같다`**.

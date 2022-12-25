@@ -48,13 +48,6 @@
             Cancel
         </button>
     </form>
-    <transition name="fade">
-        <Toast
-            v-if="showToast"
-            :message="toastMessage"
-            :type="toastAlertType"
-        />
-    </transition>
 </template>
 
 <script>
@@ -62,13 +55,11 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from '@/axios';    // axios.js 파일의 axios를 가져와 사용하기.
 import { ref, computed, onUpdated } from 'vue';
 import _ from 'lodash';
-import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import Input from '@/components/input.vue';
 
 export default {
     components: {
-        Toast,
         Input,
     },
     props: {
@@ -188,21 +179,5 @@ export default {
 };
 </script>
 
-<style scoped>
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: all 0.5s ease;
-    }
-
-    .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
-        transform: translateY(-30px);   
-    }
-    .fade-enter-to,
-    .fade-leave-from {
-        opacity: 1;
-        transform: translateY(0px);
-    }
-
+<style>
 </style>

@@ -55,11 +55,6 @@
       </ul>
     </nav>
   </div>
-  <Toast
-      v-if="showToast"
-      :message="toastMessage"
-      :type="toastAlertType"
-    />
 </template>
 
 <script>
@@ -68,7 +63,6 @@ import { ref, computed, watch } from "vue";
 import axios from '@/axios';  // axios.js 파일의 axios를 가져와 사용하기.
 // @는 src 경로를 의미함.
 import TodoList from "@/components/TodoList.vue";
-import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
 
@@ -76,7 +70,6 @@ export default {
   name: "App",
   components: {
     TodoList,
-    Toast,
   },
   setup() {
     const router = useRouter();

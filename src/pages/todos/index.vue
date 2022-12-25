@@ -27,49 +27,28 @@
       @child-delete-todo="parentsDeleteTodo"
     />
     <hr />
-    <!-- 추후 pagination components로 빼기. -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li v-if="currentPage !== 1" class="page-item">
-          <a 
-            class="page-link" 
-            style="cursor: pointer"
-            @click="getTodos(currentPage - 1)"
-          >
-            Previous
-          </a>
-        </li>
-        <li
-          class="page-item"
-          v-for="page in numberOfPages"
-          :key="page"
-          :class="currentPage === page ? 'active' : ''"
-        >
-          <a class="page-link" style="cursor: pointer" @click="getTodos(page)">{{page}}</a>
-        </li>
-        <li v-if="numberOfPages !== currentPage" class="page-item">
-          <a class="page-link" style="cursor: pointer" @click="getTodos(currentPage + 1)">
-            Next
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <Pagination 
+      v-if="todos.length"
+      :numberOfPages="numberOfPages"
+      :currentPage="currentPage"
+      @click="getTodos"
+    />
   </div>
 </template>
 
 <script>
 import { ref, computed, watch } from "vue";
-// import axios from 'axios';
-import axios from '@/axios';  // axios.js 파일의 axios를 가져와 사용하기.
-// @는 src 경로를 의미함.
+import axios from '@/axios';  
 import TodoList from "@/components/TodoList.vue";
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: "App",
   components: {
     TodoList,
+    Pagination,
   },
   setup() {
     const router = useRouter();

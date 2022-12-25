@@ -13,5 +13,6 @@
 
 ### Description
 
-- `navbar`와 `pagination`을 component로 추출하여 refactoring 하기.
+- `vuex` `actions`실수를 수정하기.
+- json server가 접속 안되었을때 `Someting went wrong` 문구 나오지 않는 오류 수정.
 

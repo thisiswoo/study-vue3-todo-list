@@ -20,7 +20,8 @@ export const useToast = () => {
         // store.dispatch('triggerToast', message, type);
         
         // vuex modules를 활용한 refactoring
-        store.dispatch('toast/triggerToast', message, type);
+        // store.dispatch('toast/triggerToast', { message: message, type: type });
+        store.dispatch('toast/triggerToast', { message, type });
     };
 
     return {

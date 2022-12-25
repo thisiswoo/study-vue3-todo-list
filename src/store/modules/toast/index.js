@@ -29,19 +29,16 @@ export default {
     actions: {
         // context 인자 안에 store.commit이 있다.
         // triggerToast(context, type = 'success') {
-        triggerToast({ commit }, message, type = 'success') {
+        triggerToast({ commit }, payload) {
+            // message, type = 'success'
             // commit('UPDATE_TOAST_MESSAGE', message);
             // commit('UPDATE_TOAST_ALERT_TYPE', type);
             // commit('UPDATE_TOAST_STATUS', true);
 
             commit('ADD_TOAST', {
-                // message: message,
-                // type: type
-                // js에서 key: value 가 같으면 생략 가능하다.
-
                 id: Date.now(),
-                message,
-                type,
+                message: payload.message,
+                type: payload.type,
             });
 
             setTimeout(() => {
